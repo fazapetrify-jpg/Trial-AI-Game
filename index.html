@@ -1,0 +1,2413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Hearing Game by Musti Musik</title>
+<meta name="description" content="Uji telingamu tiap hari. 6 soal interval, chord, dan progresi. Bagikan skormu dan tantang temanmu.">
+<meta property="og:title" content="Interactive Hearing Game by Musti Musik">
+<meta property="og:description" content="Uji telingamu tiap hari. 6 soal interval, chord, dan progresi. Bagikan skormu dan tantang temanmu.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mustimusik.id/tebaknada">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0f0f14">
+<style>
+  :root{
+    --bg:#0f0f14;
+    --panel:#191922;
+    --panel2:#20202b;
+    --accent:#f2c14e;
+    --accent2:#7c5cff;
+    --green:#3ecf8e;
+    --red:#ff5c5c;
+    --text:#f2f2f5;
+    --muted:#8a8a99;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:radial-gradient(circle at 50% -10%, #26263a 0%, var(--bg) 60%);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:24px 16px 60px;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+  }
+  @media (min-width:900px){
+    .app{ max-width:640px; }
+    header h1{ font-size:38px; }
+    header .sub{ font-size:16px; }
+    .card{ padding:40px; border-radius:26px; }
+    .qtitle{ font-size:24px; }
+    .play-btn{ padding:22px; font-size:18px; }
+    .opt{ padding:20px 14px; font-size:17px; }
+    .score-big{ font-size:76px; }
+    .score-label{ font-size:16px; }
+    .start-screen p{ font-size:16.5px; }
+  }
+  header{
+    text-align:center;
+    margin-bottom:20px;
+  }
+  header h1{
+    font-size:clamp(17px, 6.2vw, 28px);
+    margin:0 0 4px;
+    letter-spacing:-0.5px;
+    white-space:nowrap;
+  }
+  header .sub{
+    color:var(--muted);
+    font-size:14px;
+  }
+  .badge{
+    display:inline-block;
+    background:var(--accent2);
+    color:white;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:10px;
+    letter-spacing:0.5px;
+  }
+  .badge.practice{background:var(--panel2);color:var(--muted);}
+  .streak{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:var(--panel2);
+    color:var(--accent);
+    font-size:12px;
+    font-weight:700;
+    padding:4px 12px;
+    border-radius:20px;
+    margin-left:6px;
+  }
+  .card{
+    background:var(--panel);
+    border-radius:20px;
+    padding:24px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    margin-bottom:16px;
+  }
+  .progress-row{
+    display:flex;
+    gap:6px;
+    margin-bottom:20px;
+  }
+  .dot{
+    flex:1;
+    height:6px;
+    border-radius:4px;
+    background:#33333f;
+    transition:background 0.3s;
+  }
+  .dot.correct{background:var(--green);}
+  .dot.wrong{background:var(--red);}
+  .dot.current{background:var(--accent);}
+  .qnum{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:6px;
+  }
+  .qtitle{
+    font-size:19px;
+    font-weight:600;
+    margin-bottom:20px;
+  }
+  .play-btn{
+    width:100%;
+    background:var(--accent2);
+    color:white;
+    border:none;
+    border-radius:14px;
+    padding:18px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:22px;
+    transition:transform 0.1s;
+  }
+  .play-btn:active{transform:scale(0.97);}
+  .play-btn svg{width:18px;height:18px;}
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .opt{
+    background:var(--panel2);
+    border:2px solid transparent;
+    color:var(--text);
+    border-radius:12px;
+    padding:14px 10px;
+    font-size:14.5px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.15s;
+    text-align:center;
+  }
+  .opt:hover{background:#282836;}
+  .opt.selected-correct{
+    background:rgba(62,207,142,0.15);
+    border-color:var(--green);
+    color:var(--green);
+  }
+  .opt.selected-wrong{
+    background:rgba(255,92,92,0.15);
+    border-color:var(--red);
+    color:var(--red);
+  }
+  .opt.reveal-correct{
+    border-color:var(--green);
+    color:var(--green);
+  }
+  .opt:disabled{cursor:default;}
+  .next-btn{
+    width:100%;
+    margin-top:18px;
+    background:var(--accent);
+    color:#1a1a1a;
+    border:none;
+    border-radius:14px;
+    padding:14px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    display:none;
+  }
+  .next-btn.show{display:block;}
+  .explain-box{
+    display:none;
+    background:var(--panel2);
+    border-radius:14px;
+    padding:14px 16px;
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--text);
+    margin-top:16px;
+    text-align:left;
+  }
+  .explain-box.show{display:block;}
+  .explain-box strong{color:var(--accent);}
+
+  /* Results screen */
+  .results{
+    text-align:center;
+  }
+  .score-big{
+    font-size:56px;
+    font-weight:800;
+    margin:6px 0 2px;
+  }
+  .score-label{
+    color:var(--muted);
+    font-size:14px;
+    margin-bottom:20px;
+  }
+  .grid-preview{
+    font-size:26px;
+    letter-spacing:6px;
+    margin:18px 0;
+  }
+  .share-btn{
+    width:100%;
+    background:var(--green);
+    color:#0a1a12;
+    border:none;
+    border-radius:14px;
+    padding:16px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    margin-bottom:10px;
+  }
+  .cta-btn{
+    width:100%;
+    display:block;
+    text-decoration:none;
+    box-sizing:border-box;
+    background:linear-gradient(135deg, var(--accent2), #9b7dff);
+    color:white;
+    border:none;
+    border-radius:14px;
+    padding:16px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    margin-bottom:10px;
+  }
+  .cta-sub{
+    font-size:12px;
+    color:var(--muted);
+    margin:-4px 0 14px;
+  }
+  .countdown-box{
+    background:var(--panel2);
+    color:var(--accent);
+    font-size:13px;
+    font-weight:600;
+    padding:10px;
+    border-radius:12px;
+    margin-bottom:16px;
+  }
+  .retry-btn{
+    width:100%;
+    background:transparent;
+    color:var(--muted);
+    border:1px solid #33333f;
+    border-radius:14px;
+    padding:14px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .copied-toast{
+    font-size:13px;
+    color:var(--green);
+    margin-top:8px;
+    height:16px;
+  }
+  .start-screen{
+    text-align:center;
+  }
+  .start-screen p{
+    color:var(--muted);
+    font-size:14.5px;
+    line-height:1.6;
+    margin-bottom:22px;
+  }
+  .difficulty-note{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin:18px 0 6px;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .difficulty-note span{
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .diff-dot{
+    width:8px;height:8px;border-radius:50%;
+  }
+  .mode-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:18px;
+  }
+  .mode-card{
+    background:var(--panel2);
+    border:2px solid transparent;
+    border-radius:16px;
+    padding:18px 12px;
+    cursor:pointer;
+    text-align:center;
+    transition:all 0.15s;
+    color:var(--text);
+  }
+  .mode-card:hover{background:#282836; transform:translateY(-2px);}
+  .mode-card .mode-icon{font-size:28px; margin-bottom:8px;}
+  .mode-card .mode-title{font-size:14.5px; font-weight:700; margin-bottom:4px;}
+  .mode-card .mode-desc{font-size:11.5px; color:var(--muted); line-height:1.4;}
+  .mode-card.mode-song{
+    grid-column:1 / -1;
+    background:rgba(242,193,78,0.12);
+    border-color:var(--accent);
+  }
+  .mode-card.mode-song:hover{background:rgba(242,193,78,0.2);}
+  .mode-card.mode-song .mode-title{color:var(--accent);}
+  .back-link{
+    display:inline-block;
+    background:none;
+    border:none;
+    color:var(--muted);
+    font-size:13px;
+    cursor:pointer;
+    margin-bottom:14px;
+    padding:0;
+  }
+  .back-link:hover{color:var(--text);}
+  .yt-embed-wrap{
+    position:relative;
+    width:100%;
+    padding-bottom:56.25%;
+    height:0;
+    border-radius:14px;
+    overflow:hidden;
+    background:#000;
+  }
+  .yt-embed-wrap iframe{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    border:0;
+  }
+  .yt-embed-wrap.compact{padding-bottom:32%;}
+  .step-dots{
+    display:flex;
+    gap:5px;
+    margin-bottom:16px;
+  }
+  .step-dots .dot{
+    flex:1;
+    height:5px;
+    border-radius:4px;
+    background:#33333f;
+  }
+  .step-dots .dot.done{background:var(--accent2);}
+  .step-dots .dot.current{background:var(--accent);}
+  .step-label{
+    color:var(--muted);
+    font-size:12.5px;
+    margin-bottom:4px;
+  }
+  .step-body{
+    background:var(--panel2);
+    border-radius:14px;
+    padding:22px 16px;
+    text-align:center;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+    margin:14px 0 20px;
+    min-height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .step-nav{
+    display:flex;
+    gap:10px;
+  }
+  .step-nav button{flex:1;}
+  .btn-secondary{
+    background:var(--panel2);
+    color:var(--text);
+    border:none;
+    border-radius:14px;
+    padding:14px;
+    font-size:14.5px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .gb-intro{
+    text-align:center;
+  }
+  .gb-intro .badge-msg{
+    background:var(--panel2);
+    border-radius:14px;
+    padding:18px;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--text);
+    margin:16px 0 20px;
+  }
+  .gb-line{
+    background:var(--panel2);
+    border-radius:12px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    text-align:left;
+  }
+  .gb-line-label{
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  .gb-tokens{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .gb-dot{
+    min-width:18px;
+    padding:6px 2px;
+    text-align:center;
+    color:var(--muted);
+    font-size:14px;
+    font-weight:700;
+  }
+  .gb-voicing{
+    display:block;
+    font-size:9px;
+    font-weight:600;
+    color:var(--muted);
+    text-align:center;
+    margin-top:1px;
+  }
+  .gb-token{
+    min-width:34px;
+    padding:6px 4px;
+    text-align:center;
+    border-radius:8px;
+    background:var(--bg);
+    font-size:13px;
+    font-weight:700;
+    color:var(--text);
+  }
+  .gb-blank{
+    width:34px;
+    min-width:34px;
+    padding:6px 2px;
+    text-align:center;
+    border-radius:8px;
+    background:transparent;
+    border:2px solid var(--accent2);
+    color:var(--text);
+    font-size:13px;
+    font-weight:700;
+  }
+  .gb-blank:focus{outline:none; border-color:var(--accent);}
+  .gb-blank.correct{
+    border-color:var(--green);
+    background:rgba(62,207,142,0.15);
+    color:var(--green);
+    opacity:1;
+  }
+  .gb-blank.wrong{
+    border-color:var(--red);
+    background:rgba(255,92,92,0.15);
+    color:var(--red);
+    opacity:1;
+  }
+  .gb-blank.format-bad{
+    border-color:var(--red);
+    background:rgba(255,92,92,0.1);
+  }
+  .gb-blank.near{
+    border-color:var(--accent);
+    background:rgba(242,193,78,0.15);
+    color:var(--accent);
+    opacity:1;
+  }
+  .gb-blank:disabled{cursor:default;}
+  .gb-correction{
+    font-size:10.5px;
+    color:var(--green);
+    margin-top:3px;
+    text-align:left;
+    line-height:1.4;
+    max-width:120px;
+  }
+  .gb-correction.near{color:var(--accent);}
+  .gb-correction.wrong-text{color:var(--red);}
+  .gb-feedback{
+    font-size:13.5px;
+    font-weight:700;
+    border-radius:12px;
+    padding:10px 14px;
+    margin:-4px 0 14px;
+  }
+  .gb-feedback.ok{background:rgba(62,207,142,0.15); color:var(--green);}
+  .gb-feedback.no{background:rgba(255,92,92,0.15); color:var(--red);}
+  .gb-select{
+    width:100%;
+    background:var(--panel2);
+    color:var(--text);
+    border:2px solid transparent;
+    border-radius:12px;
+    padding:14px;
+    font-size:15px;
+    font-weight:600;
+    margin:14px 0;
+  }
+  .gb-select.correct{border-color:var(--green);}
+  .gb-select.wrong{border-color:var(--red);}
+  .gb-table-wrap{
+    overflow-x:auto;
+    margin:14px 0;
+    border-radius:12px;
+  }
+  .gb-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+    min-width:420px;
+  }
+  .gb-table th, .gb-table td{
+    border:1px solid #33333f;
+    padding:7px 6px;
+    text-align:center;
+  }
+  .gb-table th{
+    background:var(--panel2);
+    color:var(--accent);
+  }
+  .gb-table td{color:var(--text);}
+  .gb-table td.highlight{
+    background:rgba(124,92,255,0.25);
+    font-weight:700;
+    color:var(--accent2);
+  }
+  .piano-wrap{
+    display:flex;
+    justify-content:center;
+    margin:16px 0;
+    overflow-x:auto;
+  }
+  .piano-key{
+    position:relative;
+  }
+  .piano-white{
+    width:32px; height:110px;
+    background:#f2f2f5;
+    border:1px solid #111;
+    border-radius:0 0 6px 6px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom:6px;
+    font-size:10px;
+    font-weight:700;
+    color:#333;
+  }
+  .piano-white.active{background:var(--accent); color:#1a1a1a;}
+  .piano-black{
+    width:20px; height:66px;
+    background:#111;
+    border-radius:0 0 4px 4px;
+    position:absolute;
+    top:0; right:-10px;
+    z-index:2;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom:5px;
+    font-size:8px;
+    font-weight:700;
+    color:#fff;
+  }
+  .piano-black.active{background:var(--accent2);}
+  .pattern-pick{
+    background:var(--panel2);
+    border:2px solid transparent;
+    border-radius:14px;
+    padding:14px;
+    text-align:left;
+    cursor:pointer;
+    margin-bottom:10px;
+  }
+  .pattern-pick.selected{
+    border-color:var(--accent2);
+    background:rgba(124,92,255,0.15);
+  }
+  .pattern-pick.correct{
+    border-color:var(--green);
+    background:rgba(62,207,142,0.15);
+  }
+  .pattern-pick.wrong-pick{
+    border-color:var(--red);
+    background:rgba(255,92,92,0.15);
+  }
+  .pattern-pick.missed{
+    border-color:var(--green);
+    opacity:0.7;
+  }
+  .pattern-pick .pp-name{font-weight:700; font-size:14px; margin-bottom:3px;}
+  .pattern-pick .pp-tag{font-size:12px; color:var(--muted); line-height:1.4; margin-bottom:8px;}
+  .pattern-visual{
+    background:var(--bg);
+    border-radius:10px;
+    padding:8px;
+    overflow-x:auto;
+  }
+  .pv-row{
+    display:flex;
+    align-items:center;
+    gap:4px;
+  }
+  .pv-row + .pv-row{margin-top:4px;}
+  .pv-rowlabel{
+    width:20px;
+    flex-shrink:0;
+    font-size:9px;
+    font-weight:700;
+    color:var(--muted);
+  }
+  .pv-grid{
+    display:flex;
+    gap:3px;
+  }
+  .pv-cell{
+    height:20px;
+    border-radius:5px;
+    background:var(--panel2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    font-weight:700;
+    color:var(--muted);
+    flex-shrink:0;
+  }
+  .pv-cell.filled{
+    background:var(--accent2);
+    color:#fff;
+  }
+  .pv-cell.filled.lh{
+    background:var(--accent);
+    color:#1a1a1a;
+  }
+  .pv-cell.beat{
+    background:transparent;
+    color:var(--muted);
+    font-size:8.5px;
+    font-weight:600;
+  }
+  .pv-row:has(.beat){margin-bottom:1px;}
+  .gb-nav{
+    display:flex;
+    gap:10px;
+    margin-top:8px;
+  }
+  .gb-nav button{flex:1;}
+  .score-breakdown{
+    text-align:left;
+    background:var(--panel2);
+    border-radius:14px;
+    padding:16px;
+    font-size:13px;
+    line-height:2;
+    margin:16px 0;
+  }
+  .score-breakdown .sb-row{
+    display:flex;
+    justify-content:space-between;
+  }
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:20px;
+    line-height:1.6;
+  }
+  footer a{
+    color:var(--accent);
+    text-decoration:none;
+    font-weight:600;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div id="badgeRow">
+      <div class="badge">TANTANGAN HARIAN</div>
+    </div>
+    <h1>Interactive Hearing Game</h1>
+    <div class="sub" style="margin-top:-2px;">by Musti Musik</div>
+    <div class="sub" id="dateLabel"></div>
+  </header>
+
+  <div class="card" id="mainCard">
+    <!-- content injected by JS -->
+  </div>
+
+  <footer id="footerNote"></footer>
+</div>
+
+<script>
+// ---------- Config ----------
+const SITE_URL = "mustimusik.id/tebaknada";
+const STORAGE_KEY = "tebaknada_progress_v1";
+
+const MODES = {
+  interval: { label:'Tebak Nada', short:'Interval', icon:'🎧', desc:'Tebak jarak antar 2 nada', title:'🎧 Tebak Nada' },
+  chord: { label:'Tebak Chord', short:'Chord', icon:'🎹', desc:'Tebak kualitas chord', title:'🎹 Tebak Chord' },
+  progression: { label:'Tebak Progresi', short:'Progresi', icon:'🎼', desc:'Tebak urutan chord', title:'🎼 Tebak Progresi' },
+  all: { label:'Tebak Ketiganya', short:'Campuran', icon:'🎯', desc:'Interval, chord, & progresi dicampur', title:'🎯 Tebak Semua' },
+  song: { label:'Latihan Tebak Chord Lagu', short:'Chord Lagu', icon:'🎵', desc:'Tebak chord lewat cuplikan lagu', title:'🎵 Tebak Chord Lagu' }
+};
+
+// ---------- Audio Engine ----------
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+function getCtx(){
+  if(!actx) actx = new AudioCtx();
+  return actx;
+}
+function midiToFreq(m){ return 440 * Math.pow(2,(m-69)/12); }
+
+function playNote(midi, startTime, duration, gainVal=0.22){
+  const ctx = getCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'triangle';
+  osc.frequency.value = midiToFreq(midi);
+  gain.gain.setValueAtTime(0.0001, startTime);
+  gain.gain.exponentialRampToValueAtTime(gainVal, startTime + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(startTime);
+  osc.stop(startTime + duration + 0.05);
+}
+
+function playSequence(notes){
+  const ctx = getCtx();
+  if(ctx.state === 'suspended') ctx.resume();
+  const now = ctx.currentTime + 0.05;
+  notes.forEach(n=>{
+    playNote(n.midi, now + n.offset, n.dur || 1.1, n.gain || 0.22);
+  });
+}
+
+function playChord(midis, dur=1.6){
+  playSequence(midis.map(m=>({midi:m, offset:0, dur})));
+}
+
+function playMelodicInterval(root, interval, dur=0.8){
+  playSequence([
+    {midi:root, offset:0, dur},
+    {midi:root+interval, offset:dur*0.85, dur}
+  ]);
+}
+
+function playProgression(chords, chordDur=1.0, gap=0.05){
+  const notes = [];
+  chords.forEach((chord, i)=>{
+    const offset = i * (chordDur+gap);
+    chord.forEach(m=> notes.push({midi:m, offset, dur:chordDur}));
+  });
+  playSequence(notes);
+}
+
+// ---------- Question bank ----------
+const INTERVALS = {
+  'Minor 2nd': 1, 'Major 2nd': 2, 'Minor 3rd': 3, 'Major 3rd': 4,
+  'Perfect 4th': 5, 'Tritone': 6, 'Perfect 5th': 7, 'Minor 6th': 8,
+  'Major 6th': 9, 'Minor 7th': 10, 'Major 7th': 11, 'Octave': 12
+};
+const CHORDS = {
+  'Major': [0,4,7], 'Minor': [0,3,7], 'Diminished': [0,3,6],
+  'Augmented': [0,4,8], 'Major 7th': [0,4,7,11], 'Minor 7th': [0,3,7,10],
+  'Dominant 7th': [0,4,7,10]
+};
+const PROGRESSIONS = {
+  'I - IV - V - I': [0,5,7,0],
+  'I - V - vi - IV': [0,7,9,5],
+  'ii - V - I': [2,7,0],
+  'I - vi - IV - V': [0,9,5,7],
+  'vi - IV - I - V': [9,5,0,7]
+};
+
+// ---------- Song bank (for "Latihan Tebak Chord Lagu") ----------
+// Isi startSeconds (detik mulai klip) dan answer (nama chord, harus salah satu
+// key di CHORDS di atas: Major/Minor/Diminished/Augmented/Major 7th/Minor 7th/Dominant 7th)
+// untuk tiap lagu. Soal cuma dibuat dari lagu yang answer-nya sudah diisi.
+const SONGS_BANK = [
+  { videoId:'axySrE0Kg6k', title:'Beauty and the Beast', artist:'Ariana Grande, John Legend', category:'pop', startSeconds:null, clipSeconds:6, answer:null },
+  { videoId:'nScV1qu-MZQ', title:'Endless Love', artist:'Luther Vandross', category:'pop', startSeconds:null, clipSeconds:6, answer:null },
+  { videoId:'rtOvBOTyX00', title:'A Thousand Years', artist:'Christina Perri', category:'pop', startSeconds:null, clipSeconds:6, answer:null },
+  { videoId:'jP6eEKrghGI', title:'Marry Your Daughter', artist:'Brian McKnight', category:'pop', startSeconds:null, clipSeconds:6, answer:null },
+  { videoId:'Jr9K5hLvULk', title:'Until I Found You', artist:'Stephen Sanchez', category:'pop', startSeconds:null, clipSeconds:6, answer:null },
+  { videoId:'9sE5kEnitqE', title:'Goodness of God', artist:'CeCe Winans', category:'worship', startSeconds:null, clipSeconds:6, answer:null },
+  { videoId:'5_aIauL2xKA', title:'Shout to the Lord', artist:'Hillsong Worship', category:'worship', startSeconds:null, clipSeconds:6, answer:null },
+  { videoId:'caDDPuwQyyQ', title:'I Sing Praises', artist:'Terry MacAlmon', category:'worship', startSeconds:null, clipSeconds:6, answer:null },
+  { videoId:'2xcFM9CBiOE', title:'Holy Forever', artist:'CeCe Winans', category:'worship', startSeconds:null, clipSeconds:6, answer:null },
+  { videoId:'f2oxGYpuLkw', title:'Praise', artist:'Elevation Worship', category:'worship', startSeconds:null, clipSeconds:6, answer:null }
+];
+const SONG_CATEGORIES = {
+  pop: { label:'Lagu Pop', icon:'🎤' },
+  worship: { label:'Worship', icon:'🙏' }
+};
+
+// ---------- Music theory reference tables (semua nada dasar) ----------
+const ROMAN_DEGREES = ['I','ii','iii','IV','V','vi','VII°'];
+const SCALE_TABLE = {
+  'C': ['C','D','E','F','G','A','B'],
+  'Db':['Db','Eb','F','Gb','Ab','Bb','C'],
+  'D': ['D','E','F#','G','A','B','C#'],
+  'Eb':['Eb','F','G','Ab','Bb','C','D'],
+  'E': ['E','F#','G#','A','B','C#','D#'],
+  'F': ['F','G','A','Bb','C','D','E'],
+  'F#':['F#','G#','A#','B','C#','D#','F'],
+  'G': ['G','A','B','C','D','E','F#'],
+  'Ab':['Ab','Bb','C','Db','Eb','F','G'],
+  'A': ['A','B','C#','D','E','F#','G#'],
+  'Bb':['Bb','C','D','Eb','F','G','A'],
+  'B': ['B','C#','D#','E','F#','G#','A#']
+};
+const KEY_CHORD_TABLE = {
+  'C': ['C','Dm','Em','F','G','Am','Bdim'],
+  'Db':['Db','Ebm','Fm','Gb','Ab','Bbm','Cdim'],
+  'D': ['D','Em','F#m','G','A','Bm','C#dim'],
+  'Eb':['Eb','Fm','Gm','Ab','Bb','Cm','Ddim'],
+  'E': ['E','F#m','G#m','A','B','C#m','D#dim'],
+  'F': ['F','Gm','Am','Bb','C','Dm','Edim'],
+  'F#':['F#','G#m','A#m','B','C#','D#m','Fdim'],
+  'G': ['G','Am','Bm','C','D','Em','F#dim'],
+  'Ab':['Ab','Bbm','Cm','Db','Eb','Fm','Gdim'],
+  'A': ['A','Bm','C#m','D','E','F#m','G#dim'],
+  'Bb':['Bb','Cm','Dm','Eb','F','Gm','Adim'],
+  'B': ['B','C#m','D#m','E','F#','G#m','A#dim']
+};
+// Nada hitam (untuk render visual piano)
+const SHARP_KEYS_WITH_BLACK = ['C#','D#','F#','G#','A#'];
+// pemetaan nada -> semitone (0-11), buat nentuin posisi tuts putih/hitam yang bener
+const NOTE_SEMITONE = {
+  'C':0, 'B#':0,
+  'C#':1, 'Db':1,
+  'D':2,
+  'D#':3, 'Eb':3,
+  'E':4, 'Fb':4,
+  'F':5, 'E#':5,
+  'F#':6, 'Gb':6,
+  'G':7,
+  'G#':8, 'Ab':8,
+  'A':9,
+  'A#':10, 'Bb':10,
+  'B':11, 'Cb':11
+};
+const WHITE_SEMITONES = [0,2,4,5,7,9,11];
+const BLACK_SEMITONES = [1,3,6,8,10];
+
+// ---------- Bank pattern iringan (dari guide) ----------
+// visual: { beats: jumlah kotak ketukan, rh: array nada/​'V'(stab)/null per kotak, lh: array sama buat tangan kiri }
+// visual.rh = kolom "T. Kanan (RH)" di guide, visual.lh = kolom "T. Kiri (LH)" — sesuai urutan tabel aslinya
+const PATTERN_BANK = [
+  { id:'lambat1', group:'Lambat', name:'Lagu Lambat 1', tag:'Paling dasar, cocok buat lagu yang baru dipelajari.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,'V',null], lh:['1',null,null,null,null,null,null,null] } },
+  { id:'lambat2', group:'Lambat', name:'Lagu Lambat 2', tag:'Variasi dari pattern 1, sedikit lebih berisi.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,'V',null], lh:[null,null,null,null,null,null,'1','1'] } },
+  { id:'lambat3', group:'Lambat', name:'Lagu Lambat 3', tag:'Variasi lanjutan dari pattern 1/2, masih simpel buat pemula.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,'V',null], lh:[null,null,null,null,'1','1','1','1'] } },
+  { id:'lambat4', group:'Lambat', name:'Lagu Lambat 4', tag:'Lebih flowing & mengalun, cocok setelah lancar di pattern dasar.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,'V',null], lh:['1','5',"1'",'5','1','5',"1'",'5'] } },
+  { id:'lambat5', group:'Lambat', name:'Lagu Lambat 5', tag:'Mirip pattern 4, kesannya lebih manis.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,'V',null], lh:['1','5',"3'",'5','1','5',"3'",'5'] } },
+  { id:'lambat6', group:'Lambat', name:'Lagu Lambat 6', tag:'Kesan bergerak naik, cocok buat transisi ke bagian yang lebih hidup.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,'V',null], lh:['1','5',"1'","2'","3'",null,null,null] } },
+  { id:'lambat7', group:'Lambat', name:'Lagu Lambat 7', tag:'Variasi dari pattern 6.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,'V',null], lh:['1','5',"2'","3'",null,null,null,null] } },
+  { id:'lambat8', group:'Lambat', name:'Lagu Lambat 8', tag:'Mirip pattern 5, tapi lebih disyncop.',
+    visual:{ beats:8, rh:[null,'V',null,null,null,'V',null,null], lh:['1','5',"3'",'5','1','5',"3'",'5'] } },
+  { id:'lambat9', group:'Lambat', name:'Lagu Lambat 9', tag:'Broken chord isian, terasa lebih "mengisi".',
+    visual:{ beats:8, rh:['3','5','1','2','3','5','1','2'], lh:['1',null,null,null,null,null,'1',null] } },
+  { id:'lambat10', group:'Lambat', name:'Lagu Lambat 10', tag:'Kesan lapang & sederhana.',
+    visual:{ beats:8, rh:[null,null,'V',null,null,null,'V',null], lh:['1',null,null,null,'1','2',null,'1'] } },
+  { id:'lambat11', group:'Lambat', name:'Lagu Lambat 11', tag:'Bass bergerak, RH oktaf — lebih advance.',
+    visual:{ beats:8, rh:['5',null,'2',null,'5',null,'2',null], lh:['1','5',"1'",null,null,null,"1'",null] } },
+  { id:'lambat12', group:'Lambat', name:'Lagu Lambat 12', tag:'Variasi dari pattern 11, bass-nya lebih bergerak.',
+    visual:{ beats:8, rh:['5',null,'2','3','5',null,'2','3'], lh:['1','5',"1'",null,null,null,"1'",null] } },
+  { id:'lambat13', group:'Lambat', name:'Lagu Lambat 13', tag:'Bass sederhana, RH oktaf.',
+    visual:{ beats:8, rh:['5',null,'2',null,'5',null,'5',null], lh:['1','5',"1'",null,null,null,null,null] } },
+  { id:'lambat14', group:'Lambat', name:'Lagu Lambat 14', tag:'RH & LH gantian, kesan lebih hidup.',
+    visual:{ beats:8, rh:['V',null,'1',null,'V',null,'1',null], lh:['1','5',"1'","1'",null,null,null,null] } },
+  { id:'cepat1', group:'Cepat', name:'Lagu Cepat 1', tag:'Paling dasar, energik tapi rapi.',
+    visual:{ beats:8, rh:['V',null,null,null,null,null,null,null], lh:['V',null,null,null,null,null,null,null] } },
+  { id:'cepat2', group:'Cepat', name:'Lagu Cepat 2', tag:'Variasi dari pattern 1, ada aksen upbeat kecil.',
+    visual:{ beats:8, rh:['V',null,null,null,null,'V',null,null], lh:['V',null,null,null,null,null,null,null] } },
+  { id:'cepat3', group:'Cepat', name:'Lagu Cepat 3', tag:'Lebih rapat & mendorong.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,'V',null], lh:['V',null,'V',null,'V',null,'V',null] } },
+  { id:'cepat4', group:'Cepat', name:'Lagu Cepat 4', tag:'Stab 8-not padat kedua tangan, kesan penuh & powerful.',
+    visual:{ beats:8, rh:['V','V','V','V','V','V','V','V'], lh:['V','V','V','V','V','V','V','V'] } },
+  { id:'cepat5', group:'Cepat', name:'Lagu Cepat 5', tag:'Dorongan emosional, cocok buat build-up.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,'V',null], lh:['1',"1'",'1',"1'",'1',"1'",'1',"1'"] } },
+  { id:'cepat6', group:'Cepat', name:'Lagu Cepat 6 (Syncop)', tag:'Aksen syncopated, kesan lebih groovy.',
+    visual:{ beats:8, rh:['V',null,null,null,'V',null,null,null], lh:['V',null,null,null,null,null,null,null] } },
+  { id:'funk', group:'Funk', name:'Pattern Funk', tag:'Aksen jatuh sebelum ketukan (syncop), kesan nge-groove.',
+    visual:{ beats:8, rh:['V',null,'V',null,'V',null,null,null], lh:['1',null,null,null,null,'1',null,'1'] } },
+  { id:'p98', group:'9/8', name:'Pattern 9/8', tag:'Triplet feel 3 grup per birama, buat lagu birama 9/8 (detail lengkap ada di video pendamping).',
+    visual:{ beats:9, triplet:true, rh:['V',null,null,'V',null,null,'V',null,null], lh:['1',null,null,'1',null,null,'V','1',null] } },
+  { id:'p128_1', group:'12/8', name:'12/8 Pattern 1', tag:'Feel triplet mengayun & mengalun.',
+    visual:{ beats:12, triplet:true, rh:['V',null,null,'V',null,null,'V',null,null,'V',null,null], lh:['1','5',"1'","1'",'5','1','5',"1'","1'",'5',null,null] } },
+  { id:'p128_2', group:'12/8', name:'12/8 Pattern 2', tag:'Stab + bass triplet, kombinasi mengayun & tegas (detail lengkap ada di video pendamping).',
+    visual:{ beats:12, triplet:true, rh:['V',null,null,'V',null,null,'V',null,null,null,null,null], lh:['1',null,null,'1',null,null,'1','V',null,'1',null,null] } },
+  { id:'p128_3', group:'12/8', name:'12/8 Pattern 3', tag:'Kesan penuh & mengayun kuat.',
+    visual:{ beats:12, triplet:true, rh:['V','V','V','V','V','V','V','V','V','V','V','V'], lh:['1',null,'5',null,"1'",null,'5',null,'1',null,'5',null] } },
+  { id:'p68', group:'6/8', name:'Pattern 6/8', tag:'Cocok lagu pop mengayun & emosional.',
+    visual:{ beats:12, triplet:true, rh:['V','V','V','V','V','V','V','V','V','V','V','V'], lh:['1',null,null,null,null,null,null,null,null,null,null,'1'] } },
+  { id:'p34', group:'3/4', name:'Pattern 3/4', tag:'"Dum-tak-tak" — LH akar sendiri di ketuk 1, RH chord penuh masuk di ketuk 2 & 3.',
+    visual:{ beats:6, lh:['1',null,null,null,null,null], rh:[null,null,'V',null,'V',null] } }
+];
+
+// ---------- Guide bedah lagu (per videoId) ----------
+// Format tiap "line": melody = angka melodi (string, boleh pakai ' buat oktaf atas),
+// roman = urutan chord angka romawi di baris itu, chords = terjemahan ke huruf chord.
+// Tiap part (termasuk Intro) sekarang punya bentuk seragam: { roman:[...], chords:[...], time?, startSeconds?, endSeconds? }
+// roman & chords adalah progresi utuh 1 bagian (bukan per baris lirik lagi) — melodi nggak lagi jadi bagian dari game.
+const SONG_GUIDES = {
+  '9sE5kEnitqE': { // Goodness of God - CeCe Winans
+    key: 'Ab',
+    structureParts: ['Intro','Verse','Chorus'],
+    allParts: {
+      // "bars" = notasi titik asli dari guide (tiap titik = 1 ketukan). null = ketukan lanjutan/rest
+      // (bukan chord baru), dipakai buat nampilin ritme biar bisa ikut dihitung pas nebak progresi.
+      'Intro': {
+        roman:['I','IV/I','I','IV/I','I'],
+        chords:['Ab','Db/Ab','Ab','Db/Ab','Ab'],
+        time:'0:01 – 0:15', startSeconds:1, endSeconds:15,
+        bars: [
+          ['I',null,null,null, null,null,'IV/I',null, 'I',null,null,null, null,null,'IV/I',null, 'I',null,null,null]
+        ]
+      },
+      'Verse': {
+        roman:['I','IV','I','VIm','IV','V','I/III','IV','I','V/VII','VIm','IV','V','I'],
+        chords:['Ab','Db','Ab','Fm','Db','Eb','Ab/C','Db','Ab','Eb/G','Fm','Db','Eb','Ab'],
+        time:'0:15 – 0:47', startSeconds:15, endSeconds:47,
+        bars: [
+          ['I',null,null,null, null,null,null,null, 'IV',null,null,null, 'I',null,null,null, null,null,null,null],
+          ['VIm',null,null,null, 'IV',null,null,null, 'V',null,null,null, null,null,null,null],
+          ['I/III',null,null,null, 'IV',null,null,null, 'I',null,'V/VII',null, 'VIm',null,null,null],
+          ['IV',null,null,null, 'V',null,null,null, 'I',null,null,null]
+        ]
+      },
+      'Chorus': {
+        roman:['IV','I','IV','I','V','IV','I','V/VII','VIm','IV','V','I','I'],
+        chords:['Db','Ab','Db','Ab','Eb','Db','Ab','Eb/G','Fm','Db','Eb','Ab','Ab'],
+        time:'0:47 – 1:17', startSeconds:47, endSeconds:77,
+        bars: [
+          ['IV',null,null,null, null,null,null,null, 'I',null,null,null, null,null,null,null],
+          ['IV',null,null,null, null,null,null,null, 'I',null,null,null, 'V',null,null,null],
+          ['IV',null,null,null, null,null,null,null, 'I',null,'V/VII',null, 'VIm',null,null,null],
+          ['IV',null,null,null, 'V',null,null,null, 'I',null,null,null, 'I',null,null,null]
+        ]
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['lambat1','lambat4'],
+    wrongPatternIds:['cepat4','cepat5','cepat6']
+  },
+  '5_aIauL2xKA': { // Shout to the Lord - Hillsong Worship
+    key: 'A',
+    structureParts: ['Intro','Verse','Chorus'],
+    allParts: {
+      'Intro': {
+        roman:['I','V','I','V'],
+        chords:['A','E','A','E'],
+        time:'0:00 – 0:14', startSeconds:0, endSeconds:14,
+        bars: [
+          ['I',null,null,null, 'V',null,null,null, 'I',null,null,null, 'V',null,null,null]
+        ]
+      },
+      // progresi verse & chorus di sini cukup padat (banyak slash chord bertumpuk di guide asli),
+      // urutan chord-nya udah sesuai guide tapi presisi ketukan per-titik disederhanakan jadi flat list.
+      'Verse': {
+        roman:['I','V','VIm','V','IV','I/IIIm','I/IV','I/V','I/VI','VIIb','I/VI','I/V','V',
+               'I','V','VIm','V','IV','I/IIIm','I/IV','I/V','I/VI','VIIb','I/VI','I/V','V'],
+        chords:['A','E','F#m','E','D','A/C#','A/D','A/E','A/F#','G','A/F#','A/E','E',
+                'A','E','F#m','E','D','A/C#','A/D','A/E','A/F#','G','A/F#','A/E','E'],
+        time:'0:14 – 1:05', startSeconds:14, endSeconds:65
+      },
+      'Chorus': {
+        roman:['I','VIm','IV','V','I','VIm','IV','V','VIm','IV','V','IV/VI','V/VII','V',
+               'I','VIm','IV','V','I','VIm','IV','V','VIm','IV','V','I'],
+        chords:['A','F#m','D','E','A','F#m','D','E','F#m','D','E','D/F#','E/G#','E',
+                'A','F#m','D','E','A','F#m','D','E','F#m','D','E','A'],
+        time:'1:05 – 1:52', startSeconds:65, endSeconds:112
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['cepat2','cepat3'],
+    wrongPatternIds:['funk','p128_2','p128_1','lambat4']
+  },
+  'caDDPuwQyyQ': { // I Sing Praises - Terry MacAlmon
+    key: 'G',
+    structureParts: ['Intro','Verse'],
+    allParts: {
+      'Intro': {
+        roman:['IV(Maj7)','V/VI','III(minor7)','VI(minor7)','II(minor7)','IV/V','I','V(minor7)','I'],
+        chords:['C','D/E','Bm','Em','Am','C/D','G','D','G'],
+        time:'0:34 – 1:05', startSeconds:34, endSeconds:65,
+        bars: [
+          ['IV(Maj7)',null,null,null, null,null,null,null, 'V/VI',null,null,null, null,null,null,null,
+           'III(minor7)',null,null,null, null,null,null,null, 'VI(minor7)',null,null,null, null,null,null,null,
+           'II(minor7)',null,null,null, null,null,null,null, 'IV/V',null,null,null,
+           'I',null,null,null, null,null,null,null, 'V(minor7)',null,null,null, 'I',null,null,null]
+        ]
+      },
+      'Verse': {
+        roman:['IV(Maj7)','V/VI','III(minor7)','VI(minor7)','II(minor7)','IV/V','I','V(minor7)','I'],
+        chords:['C','D/E','Bm','Em','Am','C/D','G','D','G'],
+        time:'1:03 – 2:05', startSeconds:63, endSeconds:125,
+        bars: [
+          ['IV(Maj7)',null,null,null, null,null,null,null, 'V/VI',null,null,null, null,null,null,null,
+           'III(minor7)',null,null,null, null,null,null,null, 'VI(minor7)',null,null,null, null,null,null,null,
+           'II(minor7)',null,null,null, null,null,null,null, 'IV/V',null,null,null,
+           'I',null,null,null, null,null,null,null, 'V(minor7)',null,null,null, 'I',null,null,null]
+        ]
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['cepat2','cepat3'],
+    wrongPatternIds:['lambat10','lambat11','lambat12']
+  },
+  '2xcFM9CBiOE': { // Holy Forever - CeCe Winans
+    key: 'F',
+    structureParts: ['Intro','Verse','Prechorus','Chorus'],
+    allParts: {
+      'Intro': {
+        roman:['IV','VIm','V','IIIm','VIm','I/V'],
+        chords:['Bb','Dm','C','Am','Dm','F/C'],
+        time:'0:00 – 0:18', startSeconds:0, endSeconds:18,
+        bars: [
+          ['IV',null,null,'VIm', 'V',null,null,null, 'IIIm',null,null,null, 'VIm',null,'I/V',null]
+        ]
+      },
+      'Verse': {
+        roman:['I','IV','I','VIm','I/V','IV','I','IV','I','VIm','I/V','IV'],
+        chords:['F','Bb','F','Dm','F/C','Bb','F','Bb','F','Dm','F/C','Bb'],
+        time:'0:17 – 0:44', startSeconds:17, endSeconds:44,
+        bars: [
+          ['I',null,null,null, 'IV',null,'I',null, 'VIm',null,'I/V',null, 'IV',null,null,null,
+           'I',null,null,null, 'IV',null,'I',null, 'VIm',null,'I/V',null, 'IV',null,null,null]
+        ]
+      },
+      'Prechorus': {
+        roman:['IV','VIm','V','VIm','IV','IV','VIm','V','VIm','IV'],
+        chords:['Bb','Dm','C','Dm','Bb','Bb','Dm','C','Dm','Bb'],
+        time:'0:44 – 1:10', startSeconds:44, endSeconds:70,
+        bars: [
+          ['IV',null,null,'VIm', 'V',null,null,null, 'VIm',null,null,null, 'IV',null,null,null,
+           'IV',null,null,'VIm', 'V',null,null,null, 'VIm',null,null,null, 'IV',null,null,null]
+        ]
+      },
+      'Chorus': {
+        roman:['IV','VIm','V','IIIm','VIm','IIm','VIm','V','I'],
+        chords:['Bb','Dm','C','Am','Dm','Gm','Dm','C','F'],
+        time:'1:09 – 1:34', startSeconds:69, endSeconds:94,
+        bars: [
+          ['IV',null,null,'VIm', 'V',null,null,null, 'IIIm',null,null,null, 'VIm',null,null,null,
+           'IIm',null,null,'VIm', 'V',null,null,null, 'I',null,null,null]
+        ]
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['cepat1','cepat3'],
+    wrongPatternIds:['p68','cepat4','lambat14']
+  },
+  'f2oxGYpuLkw': { // Praise - Elevation Worship
+    key: 'A',
+    structureParts: ['Intro','Verse','Prechorus','Chorus'],
+    allParts: {
+      'Intro': {
+        roman:['I'],
+        chords:['A'],
+        time:'0:16 – 0:26', startSeconds:16, endSeconds:26,
+        bars: [
+          ['I',null,null,null, null,null,null,null, null,null,null,null, null,null,null,null, null,null,null,null]
+        ]
+      },
+      'Verse': {
+        roman:['I','IV','I','V','IV','I'],
+        chords:['A','D','A','E','D','A'],
+        time:'0:26 – 0:55', startSeconds:26, endSeconds:55,
+        bars: [
+          ['I',null,null,null, null,null,'IV',null, 'I',null,null,null, null,null,null,null,
+           'V',null,null,null, 'IV',null,null,null, 'I',null,null,null, null,null,null,null]
+        ]
+      },
+      'Prechorus': {
+        roman:['V','IV'],
+        chords:['E','D'],
+        time:'0:55 – 0:59', startSeconds:55, endSeconds:59,
+        bars: [
+          ['V',null,null,null, 'IV',null,null,null]
+        ]
+      },
+      'Chorus': {
+        roman:['IVm','IV','I','V','IVm','IV','I','V'],
+        chords:['Dm','D','A','E','Dm','D','A','E'],
+        time:'0:59 – 1:15', startSeconds:59, endSeconds:75,
+        bars: [
+          ['IVm',null,null,null, 'IV',null,null,null, 'I',null,null,null, 'V',null,null,null,
+           'IVm',null,null,null, 'IV',null,null,null, 'I',null,null,null, 'V',null,null,null]
+        ]
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['cepat1','cepat2'],
+    wrongPatternIds:['lambat11','lambat13','cepat4']
+  },
+  'axySrE0Kg6k': { // Beauty and the Beast - Ariana Grande, John Legend
+    key: 'E',
+    // Verse modulasi turun 3 setengah-nada (E -> Db) di pertengahan; roman tetap relatif ke key
+    // yang lagi aktif, tapi chord huruf sudah dihitung sesuai key masing-masing bagian.
+    modulationNote:'Verse modulasi turun 3 setengah-nada dari do=E ke do=Db di pertengahan lagu.',
+    structureParts: ['Intro','Verse','Chorus'],
+    allParts: {
+      'Intro': {
+        roman:['I','IV/I','I','IV/I'],
+        chords:['E','A/E','E','A/E'],
+        time:'0:10 – 0:23', startSeconds:10, endSeconds:23
+      },
+      'Verse': {
+        roman:['I','IV/I','I','IV/I','I','IIIm','IV','IV/V',
+               'I','IV/I','I','I(dominant11)','I','IIIm','IV','IV','IIIm','IIm','V','I'],
+        chords:['E','A/E','E','A/E','E','G#m','A','A/B',
+                'Db','Gb/Db','Db','Db','Db','Fm','Gb','Gb','Fm','Ebm','Ab','Db'],
+        time:'0:23 – 1:07', startSeconds:23, endSeconds:67
+      },
+      'Chorus': {
+        roman:['IIIm','IV','IIIm','IV','IIIm','VIm','VIIb','V'],
+        chords:['Fm','Gb','Fm','Gb','Fm','Bbm','Cb','Ab'],
+        time:'1:07 – 1:32', startSeconds:67, endSeconds:92
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['lambat1','lambat4'],
+    wrongPatternIds:['cepat4','cepat5','cepat6']
+  },
+  'nScV1qu-MZQ': { // Endless Love - Luther Vandross
+    key: 'Bb',
+    structureParts: ['Intro','Verse','Chorus'],
+    allParts: {
+      'Intro': {
+        roman:['I'],
+        chords:['Bb'],
+        time:'0:00 – 0:06', startSeconds:0, endSeconds:6
+      },
+      'Verse': {
+        roman:['I','I','IV','IV/V','V', 'I','I','I','I','IV','V','I','I','V/VII'],
+        chords:['Bb','Bb','Eb','Eb/F','F', 'Bb','Bb','Bb','Bb','Eb','F','Bb','Bb','F/A'],
+        time:'0:05 – 0:36', startSeconds:5, endSeconds:36
+      },
+      'Chorus': {
+        roman:['IV','V','I','V/VII','VIm','V', 'IV','V','I','VIIb/I','IIIm',
+               'IV','V','I','V/VII','VIm','V', 'IV','IIIm','IIm','V','I'],
+        chords:['Eb','F','Bb','F/A','Gm','F', 'Eb','F','Bb','Ab/Bb','Dm',
+                'Eb','F','Bb','F/A','Gm','F', 'Eb','Dm','Cm','F','Bb'],
+        time:'0:36 – 1:19', startSeconds:36, endSeconds:79
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['cepat2','lambat4'],
+    wrongPatternIds:['lambat10','lambat11','lambat12']
+  },
+  'rtOvBOTyX00': { // A Thousand Years - Christina Perri
+    key: 'Bb',
+    structureParts: ['Intro','Verse','Prechorus','Chorus'],
+    allParts: {
+      'Intro': {
+        roman:['I','I','V/VII','I/VI','I/VI','I/V','IV','I/V','V'],
+        chords:['Bb','Bb','F/A','Bb/G','Bb/G','Bb/F','Eb','Bb/F','F'],
+        time:'0:00 – 0:19', startSeconds:0, endSeconds:19
+      },
+      'Verse': {
+        roman:['IV','IIIm','VIm','V/VII','I', 'IV','IIIm','VIm','V/VII','I'],
+        chords:['Eb','Dm','Gm','F/A','Bb', 'Eb','Dm','Gm','F/A','Bb'],
+        time:'0:19 – 0:51', startSeconds:19, endSeconds:51
+      },
+      'Prechorus': {
+        roman:['IIm','VIm','V'],
+        chords:['Cm','Gm','F'],
+        time:'0:51 – 1:01', startSeconds:51, endSeconds:61
+      },
+      'Chorus': {
+        roman:['I','V/VII','VIm','V','IV','I/V','V'],
+        chords:['Bb','F/A','Gm','F','Eb','Bb/F','F'],
+        time:'1:01 – 1:22', startSeconds:61, endSeconds:82
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['p128_1','p128_2'],
+    wrongPatternIds:['lambat6','cepat2','lambat4']
+  },
+  'jP6eEKrghGI': { // Marry Your Daughter - Brian McKnight
+    key: 'B',
+    structureParts: ['Verse','Chorus'],
+    allParts: {
+      'Verse': {
+        roman:['I','V','IIm(7)','I/V','V',
+               'I','V','IIm','IIIm','IV','V','VIm','V/VII','IIm',
+               'I','V','IIm(7)','IVm',
+               'I','V','IIm','IIIm','IV','I/V','V'],
+        chords:['B','F#','C#m','B/F#','F#',
+                'B','F#','C#m','D#m','E','F#','G#m','F#/A#','C#m',
+                'B','F#','C#m','Em',
+                'B','F#','C#m','D#m','E','B/F#','F#'],
+        time:'0:00 – 0:39', startSeconds:0, endSeconds:39
+      },
+      'Chorus': {
+        roman:['I','V/VII','IIm','IV','V',
+               'I','V','IIm','IIIm','IV','V',
+               'I','V/VII','IIm','IVm',
+               'IIIm','VIm','VIIb','IVm','i'],
+        chords:['B','F#/A#','C#m','E','F#',
+                'B','F#','C#m','D#m','E','F#',
+                'B','F#/A#','C#m','Em',
+                'D#m','G#m','A','Em','Bm'],
+        time:'0:39 – 1:19', startSeconds:39, endSeconds:79
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['p128_1','p128_2'],
+    wrongPatternIds:['lambat6','cepat2','lambat4']
+  },
+  'Jr9K5hLvULk': { // Until I Found You - Stephen Sanchez
+    key: 'Bb',
+    structureParts: ['Intro','Verse','Chorus'],
+    allParts: {
+      'Intro': {
+        roman:['I','IIIm','IV','IVm'],
+        chords:['Bb','Dm','Eb','Ebm'],
+        time:'0:00 – 0:14', startSeconds:0, endSeconds:14
+      },
+      'Verse': {
+        roman:['I','IIIm/VII','IV','IVm', 'I','IIIm/VII','IV','IVm',
+               'I','IIIm/VII','IV','IVm', 'I','V','IV/V'],
+        chords:['Bb','Dm/A','Eb','Ebm', 'Bb','Dm/A','Eb','Ebm',
+                'Bb','Dm/A','Eb','Ebm', 'Bb','F','Eb/F'],
+        time:'0:14 – 0:42', startSeconds:14, endSeconds:42
+      },
+      'Chorus': {
+        roman:['IV','V','I','IIIm','IV','V','I','I(7)',
+               'IV','V','I','IIIm','IV','IVm'],
+        chords:['Eb','F','Bb','Dm','Eb','F','Bb','Bb',
+                'Eb','F','Bb','Dm','Eb','Ebm'],
+        time:'0:42 – 1:13', startSeconds:42, endSeconds:73
+      }
+    },
+    patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
+    correctPatternIds:['p128_1','p68'],
+    wrongPatternIds:['lambat6','cepat2','lambat4']
+  }
+};
+
+const BREAKDOWN_STEPS = [
+  { icon:'🎯', title:'Cari Nada Dasar' },
+  { icon:'🎶', title:'Cari Melodi' },
+  { icon:'🧩', title:'Pastiin Struktur Lagunya' },
+  { icon:'🔢', title:'Tebak Progresinya' },
+  { icon:'🎼', title:'Ubah Progresi jadi Chord' },
+  { icon:'✋', title:'Cari Voicing yang Cocok' },
+  { icon:'🥁', title:'Pilih Pattern yang Cocok' }
+];
+
+const EXPLANATIONS = {
+  interval: {
+    'Minor 2nd': "😱 Minor 2nd — interval paling rapat & tegang, cuma beda 1 nada di piano. Ini yang bikin efek 'seram' di theme Jaws — dua nada nempel gitu doang.",
+    'Major 2nd': "🎂 Major 2nd — jarak 1 nada penuh di piano. Coba denger dua nada pertama lagu 'Happy Birthday' ('Hap-py') — itu major 2nd.",
+    'Minor 3rd': "🎸 Minor 3rd — kesannya sendu/melow. Riff pembuka 'Smoke on the Water' Deep Purple dimulai dengan lompatan minor 3rd.",
+    'Major 3rd': "☀️ Major 3rd — kesannya cerah/riang. Ini yang bikin chord major kedengaran 'senang', beda tipis sama minor 3rd yang lebih sendu.",
+    'Perfect 4th': "👰 Perfect 4th — coba inget lagu pengantin 'Here Comes the Bride', lompatan awalnya persis perfect 4th. Kokoh tapi belum se-'selesai' perfect 5th.",
+    'Tritone': "😈 Tritone — interval paling 'tegang' dari semua, sering dijuluki 'devil's interval'. Coba inget nada pembuka theme song The Simpsons.",
+    'Perfect 5th': "🎯 Perfect 5th — bunyinya kokoh & terbuka, kayak dua nada pertama lagu 'Bintang Kecil' (do...sol). Interval paling 'netral', dasar dari power chord gitar.",
+    'Minor 6th': "💔 Minor 6th — interval lebar dengan nuansa melankolis/dramatis, sering dipakai buat momen 'emosional' di soundtrack film.",
+    'Major 6th': "🌊 Major 6th — lompatan lebar tapi tetap kedengaran cerah. Coba inget awal lagu 'My Bonnie Lies Over the Ocean' — itu major 6th naik.",
+    'Minor 7th': "🎺 Minor 7th — kesannya 'menggantung', belum selesai, khas suara jazz/blues. Interval ini yang bikin dominant 7th chord pengen 'resolve'.",
+    'Major 7th': "✨ Major 7th — hampir oktaf tapi 'nyerempet', jadi kesannya tegang & megah sekaligus. Lompatan reff lagu 'Take On Me' (a-ha) terkenal karena pakai interval ini.",
+    'Octave': "🌈 Octave — nada yang sama, cuma beda tinggi-rendahnya. Lompatan pembuka 'Somewhere Over the Rainbow' itu octave persis."
+  },
+  chord: {
+    'Major': "☀️ Major — formula root + major 3rd + perfect 5th. Susunan ini yang bikin telinga otomatis dengar 'stabil/senang'.",
+    'Minor': "🌧️ Minor — beda cuma di nada tengah (minor 3rd, bukan major 3rd), tapi efeknya bikin kesan sendu.",
+    'Diminished': "⚠️ Diminished — dua interval kecil ditumpuk (minor 3rd + minor 3rd), hasilnya tegang & 'pengen diselesaikan'. Sering dipakai buat efek horor di film.",
+    'Augmented': "🌀 Augmented — dua major 3rd ditumpuk, hasilnya kedengaran 'melayang'/nggak jelas arahnya. Sering dipakai buat efek misterius atau transisi 'mimpi'.",
+    'Major 7th': "✨ Major 7th chord — nambahin nada 'megah tapi lembut' di atas chord major biasa. Khas suara jazz ballad atau lagu romantis yang 'mewah'.",
+    'Minor 7th': "🎷 Minor 7th chord — versi minor yang lebih 'halus', nggak sesendu minor biasa. Banyak dipakai di jazz, R&B, neo-soul.",
+    'Dominant 7th': "🎸 Dominant 7th — chord ini 'pengen banget' resolve ke chord lain, itu yang bikin dia jadi fondasi musik blues. Ada rasa tegang khas."
+  },
+  progression: {
+    'I - IV - V - I': "🏠 Progresi paling ikonik, kedengaran 'pulang ke rumah' di akhir. Pola dasar ribuan lagu, dari himne sampai rock klasik.",
+    'I - V - vi - IV': "🎤 Ini progresi 'sejuta lagu pop' yang paling sering dipakai musisi modern. Chord ke-3 (vi) kasih sentuhan melankolis sebelum balik ceria.",
+    'ii - V - I': "🎷 Progresi paling ikonik di jazz — hampir semua standar jazz 'landing' pakai pola ini.",
+    'I - vi - IV - V': "🕺 Progresi klasik era 50-60an, sering disebut '50s progression' atau 'doo-wop changes'. Banyak lagu oldies pakai pola ini.",
+    'vi - IV - I - V': "😢 Chord-nya sama kayak 'progresi sejuta lagu pop', tapi karena mulai dari vi (minor), kesan awalnya lebih sendu sebelum lega ke major."
+  }
+};
+
+function seededRandom(seed){
+  let s = seed;
+  return function(){
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+}
+function shuffle(arr, rng){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(rng()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function dateSeed(){
+  const d = new Date();
+  return d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+}
+function todayKey(){
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+function todayString(){
+  const d = new Date();
+  return d.toLocaleDateString('id-ID', {weekday:'long', month:'long', day:'numeric'});
+}
+function msUntilMidnight(){
+  const now = new Date();
+  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0,0,0,0);
+  return next - now;
+}
+function formatCountdown(ms){
+  const totalSec = Math.max(0, Math.floor(ms/1000));
+  const h = String(Math.floor(totalSec/3600)).padStart(2,'0');
+  const m = String(Math.floor((totalSec%3600)/60)).padStart(2,'0');
+  const s = String(totalSec%60).padStart(2,'0');
+  return `${h}:${m}:${s}`;
+}
+
+function makeIntervalQuestion(name, rng, root){
+  const semis = INTERVALS[name];
+  const distractors = shuffle(Object.keys(INTERVALS).filter(n=>n!==name), rng).slice(0,3);
+  const options = shuffle([name, ...distractors], rng);
+  return {
+    type:'interval',
+    title:'Interval apa ini?',
+    play: ()=> playMelodicInterval(root + Math.floor(rng()*4), semis),
+    options, answer:name
+  };
+}
+function makeChordQuestion(name, rng, root){
+  const shape = CHORDS[name];
+  const distractors = shuffle(Object.keys(CHORDS).filter(n=>n!==name), rng).slice(0,3);
+  const options = shuffle([name, ...distractors], rng);
+  return {
+    type:'chord',
+    title:'Ini kualitas chord apa?',
+    play: ()=>{
+      const r = root + Math.floor(rng()*4) - 2;
+      playChord(shape.map(s=>r+s));
+    },
+    options, answer:name
+  };
+}
+function makeProgressionQuestion(name, rng, root){
+  const degrees = PROGRESSIONS[name];
+  const distractors = shuffle(Object.keys(PROGRESSIONS).filter(n=>n!==name), rng).slice(0,3);
+  const options = shuffle([name, ...distractors], rng);
+  return {
+    type:'progression',
+    title:'Tebak progresi ini',
+    play: ()=>{
+      const r = root - 12;
+      const chords = degrees.map(deg=> [r+deg, r+deg+4, r+deg+7]);
+      playProgression(chords, 0.85, 0.03);
+    },
+    options, answer:name
+  };
+}
+
+// Build questions for a given mode: 'interval' | 'chord' | 'progression' | 'all'
+function buildQuestions(seed, mode){
+  const rng = seededRandom(seed);
+  const root = 60; // C4
+  const qs = [];
+
+  if(mode === 'interval'){
+    const names = shuffle(Object.keys(INTERVALS), rng).slice(0,6);
+    names.forEach(name=> qs.push(makeIntervalQuestion(name, rng, root)));
+  } else if(mode === 'chord'){
+    const names = shuffle(Object.keys(CHORDS), rng).slice(0,6);
+    names.forEach(name=> qs.push(makeChordQuestion(name, rng, root)));
+  } else if(mode === 'progression'){
+    const names = shuffle(Object.keys(PROGRESSIONS), rng).slice(0,5);
+    names.forEach(name=> qs.push(makeProgressionQuestion(name, rng, root)));
+  } else {
+    // 'all' — mix of 2 interval, 2 chord, 2 progression
+    const easyIntervals = ['Perfect 5th','Octave','Perfect 4th','Major 3rd'];
+    const medIntervals = ['Minor 3rd','Major 2nd','Minor 6th','Major 6th'];
+    const intPool = shuffle([...easyIntervals, ...medIntervals], rng);
+    for(let i=0;i<2;i++) qs.push(makeIntervalQuestion(intPool[i], rng, root));
+
+    const chordNames = shuffle(Object.keys(CHORDS), rng);
+    for(let i=0;i<2;i++) qs.push(makeChordQuestion(chordNames[i], rng, root));
+
+    const progNames = shuffle(Object.keys(PROGRESSIONS), rng);
+    for(let i=0;i<2;i++) qs.push(makeProgressionQuestion(progNames[i], rng, root));
+  }
+
+  return shuffle(qs, rng).map((q,i)=>({...q, index:i}));
+}
+
+// ---------- Progress / streak persistence ----------
+function progressKey(mode){
+  return `${STORAGE_KEY}_${mode}`;
+}
+function loadProgress(mode){
+  try{
+    return JSON.parse(localStorage.getItem(progressKey(mode))) || {};
+  }catch(e){ return {}; }
+}
+function saveProgress(mode, p){
+  localStorage.setItem(progressKey(mode), JSON.stringify(p));
+}
+function recordDailyResult(mode, score, total, grid){
+  const p = loadProgress(mode);
+  const key = todayKey();
+  let streak = p.streak || 0;
+  if(p.lastPlayedKey){
+    const prevDate = new Date(p.lastPlayedKey.replace(/-/g,'/'));
+    const todayDate = new Date(key.replace(/-/g,'/'));
+    const diffDays = Math.round((todayDate - prevDate) / 86400000);
+    if(diffDays === 1) streak += 1;
+    else if(diffDays > 1) streak = 1;
+    // diffDays === 0 shouldn't happen since we lock replays
+  } else {
+    streak = 1;
+  }
+  const updated = { lastPlayedKey:key, streak, score, total, grid };
+  saveProgress(mode, updated);
+  return updated;
+}
+
+// ---------- App State ----------
+let questions = [];
+let current = 0;
+let results = [];
+let answered = false;
+let isPractice = false;
+let countdownTimer = null;
+let selectedMode = null;
+
+const mainCard = document.getElementById('mainCard');
+const dateLabel = document.getElementById('dateLabel');
+const footerNote = document.getElementById('footerNote');
+const badgeRow = document.getElementById('badgeRow');
+const h1El = document.querySelector('header h1');
+dateLabel.textContent = todayString();
+footerNote.innerHTML = `Dibuat untuk melatih telingamu jadi musisi sungguhan.`;
+
+function setBadge(mode, streak){
+  if(mode === 'practice'){
+    badgeRow.innerHTML = `<div class="badge practice">MODE LATIHAN</div>`;
+  } else {
+    const streakHtml = streak > 1 ? `<span class="streak">🔥 ${streak} hari</span>` : '';
+    badgeRow.innerHTML = `<div class="badge">TANTANGAN HARIAN</div>${streakHtml}`;
+  }
+}
+
+function renderModeSelect(){
+  selectedMode = null;
+  h1El.textContent = 'Interactive Hearing Game';
+  badgeRow.innerHTML = `<div class="badge">PILIH MODE</div>`;
+  mainCard.innerHTML = `
+    <div class="start-screen">
+      <div class="qtitle">Uji telinga musikmu 🎹</div>
+      <p>Pilih mau latihan apa hari ini.</p>
+      <div class="mode-grid">
+        ${['interval','chord','progression','all'].map(m=>`
+          <div class="mode-card" data-mode="${m}">
+            <div class="mode-icon">${MODES[m].icon}</div>
+            <div class="mode-title">${MODES[m].label}</div>
+            <div class="mode-desc">${MODES[m].desc}</div>
+          </div>
+        `).join('')}
+        <div class="mode-card mode-song" data-mode="song">
+          <div class="mode-icon">${MODES.song.icon}</div>
+          <div class="mode-title">${MODES.song.label}</div>
+          <div class="mode-desc">${MODES.song.desc}</div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('.mode-card').forEach(card=>{
+    const m = card.getAttribute('data-mode');
+    card.onclick = ()=> m === 'song' ? renderSongCategorySelect() : renderStart(m);
+  });
+}
+
+function renderSongCategorySelect(){
+  selectedMode = 'song';
+  h1El.textContent = MODES.song.title;
+  badgeRow.innerHTML = `<div class="badge practice">MODE LATIHAN</div>`;
+  mainCard.innerHTML = `
+    <button class="back-link" id="backBtn">← Ganti Mode</button>
+    <div class="start-screen">
+      <div class="qtitle">${MODES.song.icon} ${MODES.song.label}</div>
+      <p>Pilih kategori lagu yang mau dilatih.</p>
+      <div class="mode-grid">
+        ${Object.keys(SONG_CATEGORIES).map(cat=>`
+          <div class="mode-card mode-song" data-cat="${cat}">
+            <div class="mode-icon">${SONG_CATEGORIES[cat].icon}</div>
+            <div class="mode-title">${SONG_CATEGORIES[cat].label}</div>
+            <div class="mode-desc">${SONGS_BANK.filter(s=>s.category===cat).length} lagu</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderModeSelect();
+  document.querySelectorAll('[data-cat]').forEach(card=>{
+    card.onclick = ()=> startSongPractice(card.getAttribute('data-cat'));
+  });
+}
+
+// ---------- Song practice loop (Pop / Worship) ----------
+let songPractice = { category:null, playedIds:[] };
+
+function startSongPractice(category){
+  songPractice = { category, playedIds:[] };
+  showNextPracticeSong();
+}
+
+function showNextPracticeSong(){
+  const { category } = songPractice;
+  const all = SONGS_BANK.filter(s=>s.category===category);
+  let unplayed = all.filter(s=>!songPractice.playedIds.includes(s.videoId));
+  if(unplayed.length === 0){
+    songPractice.playedIds = [];
+    unplayed = all;
+  }
+  const song = unplayed[Math.floor(Math.random()*unplayed.length)];
+  songPractice.playedIds.push(song.videoId);
+  renderSongPractice(song);
+}
+
+function renderSongPractice(song){
+  const cat = SONG_CATEGORIES[song.category];
+  const total = SONGS_BANK.filter(s=>s.category===song.category).length;
+  mainCard.innerHTML = `
+    <button class="back-link" id="backBtn">← Ganti Mode</button>
+    <div class="qnum">${cat.icon} ${cat.label} — ${songPractice.playedIds.length}/${total} lagu diputar</div>
+    <div class="qtitle">${song.title}</div>
+    <div class="sub" style="text-align:left;margin:-14px 0 16px;">${song.artist}</div>
+    <div class="yt-embed-wrap">
+      <iframe src="https://www.youtube.com/embed/${song.videoId}${song.startSeconds ? `?start=${song.startSeconds}` : ''}"
+        title="${song.title}" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <button class="play-btn" id="breakdownBtn" style="margin-top:18px;">🔍 Bedah Lagu Ini</button>
+    <button class="btn-secondary" id="nextSongBtn" style="width:100%;margin-top:10px;">🔀 Latihan Lagu Lainnya</button>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderSongCategorySelect();
+  document.getElementById('nextSongBtn').onclick = ()=> showNextPracticeSong();
+  document.getElementById('breakdownBtn').onclick = ()=>{
+    const guide = SONG_GUIDES[song.videoId];
+    if(guide) startGuidedBreakdown(song, guide);
+    else renderSongBreakdown(song, 0);
+  };
+}
+
+// ---------- Song breakdown wizard (7 steps, per song) ----------
+function renderSongBreakdown(song, stepIndex){
+  const step = BREAKDOWN_STEPS[stepIndex];
+  const isLast = stepIndex === BREAKDOWN_STEPS.length - 1;
+  const dotsHtml = BREAKDOWN_STEPS.map((s,i)=>{
+    let cls = 'dot';
+    if(i < stepIndex) cls += ' done';
+    else if(i === stepIndex) cls += ' current';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+  mainCard.innerHTML = `
+    <button class="back-link" id="backBtn">← Kembali ke Lagu</button>
+    <div class="qnum">${song.title} — ${song.artist}</div>
+    <div class="yt-embed-wrap compact" style="margin-bottom:16px;">
+      <iframe src="https://www.youtube.com/embed/${song.videoId}${song.startSeconds ? `?start=${song.startSeconds}` : ''}"
+        title="${song.title}" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <div class="step-dots">${dotsHtml}</div>
+    <div class="step-label">Step ${stepIndex+1} dari ${BREAKDOWN_STEPS.length}</div>
+    <div class="qtitle">${step.icon} ${step.title}</div>
+    <div class="step-body">Konten segera hadir 🚧</div>
+    <div class="step-nav">
+      ${stepIndex > 0 ? `<button class="btn-secondary" id="prevStepBtn">← Sebelumnya</button>` : ''}
+      <button class="play-btn" id="nextStepBtn" style="margin-bottom:0;">${isLast ? 'Selesai ✓' : 'Lanjut →'}</button>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderSongPractice(song);
+  const prevBtn = document.getElementById('prevStepBtn');
+  if(prevBtn) prevBtn.onclick = ()=> renderSongBreakdown(song, stepIndex-1);
+  document.getElementById('nextStepBtn').onclick = ()=>{
+    if(isLast) renderSongPractice(song);
+    else renderSongBreakdown(song, stepIndex+1);
+  };
+}
+
+// ---------- Guided breakdown (data-driven, per song) ----------
+let gb = null; // active guided-breakdown state
+
+function renderPianoVisual(key){
+  const notes = SCALE_TABLE[key] || [];
+  // semitone -> label nada (pakai ejaan asli dari tangga nada kalau ada, biar Db kepakai bukan C#)
+  const semitoneLabel = {};
+  notes.forEach(n=> semitoneLabel[NOTE_SEMITONE[n]] = n);
+
+  const whiteKeysHtml = WHITE_SEMITONES.map(semi=>{
+    const isActive = semi in semitoneLabel;
+    const label = isActive ? semitoneLabel[semi] : '';
+    const hasBlackAfter = BLACK_SEMITONES.includes(semi+1);
+    return `<div class="piano-key">
+      <div class="piano-white${isActive?' active':''}">${label}</div>
+      ${hasBlackAfter ? blackKeyHtml(semi+1, semitoneLabel) : ''}
+    </div>`;
+  }).join('');
+
+  return `<div class="piano-wrap"><div style="display:flex;position:relative;">${whiteKeysHtml}</div></div>`;
+}
+function blackKeyHtml(semi, semitoneLabel){
+  const isActive = semi in semitoneLabel;
+  const label = isActive ? semitoneLabel[semi] : '';
+  return `<div class="piano-black${isActive?' active':''}">${label}</div>`;
+}
+
+function beatLabels(v){
+  if(v.triplet){
+    const labels = [];
+    for(let i=0;i<v.beats;i++) labels.push(i % 3 === 0 ? String(i/3 + 1) : '');
+    return labels;
+  }
+  const labels = [];
+  for(let i=0;i<v.beats;i++) labels.push(i % 2 === 0 ? String(i/2 + 1) : '&');
+  return labels;
+}
+
+function renderPatternVisual(p){
+  const v = p.visual;
+  if(!v) return '';
+  const cellW = v.beats > 9 ? 20 : 24;
+  function row(values, extraCls){
+    const cells = values.map((val, i)=>{
+      const groupGap = v.triplet && i>0 && i % 3 === 0 ? 'margin-left:5px;' : '';
+      return `<div class="pv-cell ${val?'filled':''} ${extraCls||''}" style="width:${cellW}px;${groupGap}">${val||''}</div>`;
+    }).join('');
+    return `<div class="pv-grid">${cells}</div>`;
+  }
+  return `
+    <div class="pattern-visual">
+      <div class="pv-row"><span class="pv-rowlabel">Ketuk</span>${row(beatLabels(v), 'beat')}</div>
+      <div class="pv-row"><span class="pv-rowlabel">RH</span>${row(v.rh||[], '')}</div>
+      <div class="pv-row"><span class="pv-rowlabel">LH</span>${row(v.lh||[], 'lh')}</div>
+    </div>
+  `;
+}
+
+function renderScaleTable(key){
+  const notes = SCALE_TABLE[key];
+  let rows = '<tr><th>Nada Dasar</th>' + ROMAN_DEGREES.map((_,i)=>`<th>${i+1}</th>`).join('') + '</tr>';
+  rows += `<tr><td>do = ${key}</td>` + notes.map(n=>`<td class="highlight">${n}</td>`).join('') + '</tr>';
+  return `<div class="gb-table-wrap"><table class="gb-table">${rows}</table></div>`;
+}
+
+function renderChordTable(key){
+  const chords = KEY_CHORD_TABLE[key];
+  let rows = '<tr><th>Nada Dasar</th>' + ROMAN_DEGREES.map(d=>`<th>${d}</th>`).join('') + '</tr>';
+  rows += `<tr><td>do = ${key}</td>` + chords.map(c=>`<td class="highlight">${c}</td>`).join('') + '</tr>';
+  return `<div class="gb-table-wrap"><table class="gb-table">${rows}</table></div>`;
+}
+
+// "IV", "vim", "V/VII", dst -> index 0-6 (I..VII), ga peduli besar/kecil huruf atau akhiran m
+function romanDegreeIndex(token){
+  const letters = normTok(token).replace(/m$/,'').toUpperCase();
+  return ['I','II','III','IV','V','VI','VII'].indexOf(letters);
+}
+// terjemahin 1 token roman (boleh slash chord) ke chord huruf sesuai nada dasar manapun
+function chordForRoman(token, key){
+  const chordTable = KEY_CHORD_TABLE[key], scaleTable = SCALE_TABLE[key];
+  if(!chordTable || !scaleTable) return token;
+  const [top, bottom] = token.split('/');
+  const topIdx = romanDegreeIndex(top);
+  if(topIdx < 0) return token;
+  const topChord = chordTable[topIdx];
+  if(!bottom) return topChord;
+  const botIdx = romanDegreeIndex(bottom);
+  if(botIdx < 0) return topChord;
+  return `${topChord}/${scaleTable[botIdx]}`;
+}
+
+// pilih ~70% index buat di-blank (minimal 1 kalau array-nya >1)
+function pickBlankMask(len){
+  const blankCount = Math.max(1, Math.round(len * 0.7));
+  const idx = shuffle([...Array(len).keys()], Math.random);
+  const mask = new Array(len).fill(false);
+  idx.slice(0, blankCount).forEach(i=> mask[i]=true);
+  return mask;
+}
+
+function startGuidedBreakdown(song, guide){
+  gb = {
+    song, guide,
+    keyGuess: '', keyAttempts: 0,
+    partIndex: 0,
+    progress: {},      // { [partName]: {blanks:[bool], answers:[str]} } — tahap tebak progresi per bagian
+    chordAnswers: {},  // { [partName]: [str] } — tahap translate chord (gabungan semua bagian)
+    patternPicks: []
+  };
+  renderGbIntro();
+}
+
+function gbHeader(subtitle){
+  return `
+    <button class="back-link" id="backBtn">← Kembali ke Lagu</button>
+    <div class="qnum">${gb.song.title} — ${gb.song.artist}${subtitle ? ' · ' + subtitle : ''}</div>
+  `;
+}
+
+// bikin src embed YouTube yang beneran berhenti di endSeconds (pakai param `end` bawaan YouTube)
+function embedUrl(videoId, startSeconds, endSeconds){
+  const params = [];
+  if(startSeconds) params.push(`start=${startSeconds}`);
+  if(endSeconds) params.push(`end=${endSeconds}`);
+  return `https://www.youtube.com/embed/${videoId}${params.length ? '?' + params.join('&') : ''}`;
+}
+
+// grading token yang bisa kasih status "nyaris betul" (kuning) buat slash chord (mis. IV/I)
+function gradeToken(userVal, correctVal){
+  const u = normTok(userVal);
+  const c = normTok(correctVal);
+  if(!u) return 'wrong';
+  if(u === c) return 'correct';
+  if(c.includes('/')){
+    const parts = c.split('/');
+    if(parts.includes(u)) return 'near';
+  }
+  return 'wrong';
+}
+function tokenFeedback(grade, correctVal){
+  if(grade === 'correct') return '';
+  if(grade === 'near') return `<div class="gb-correction near">🟡 Nyaris betul — seharusnya menggunakan <strong>${correctVal}</strong></div>`;
+  return `<div class="gb-correction wrong-text">❌ Seharusnya menggunakan <strong>${correctVal}</strong></div>`;
+}
+
+// pisahin voicing dari chord utama, mis. "IV(Maj7)" -> {main:"IV", voicing:"(Maj7)"}
+// voicing cuma ditampilin sebagai info, ga ikut di-blank / dinilai
+function splitVoicing(token){
+  const m = token.match(/^(.*?)(\([^)]+\))$/);
+  if(m) return { main: m[1], voicing: m[2] };
+  return { main: token, voicing: '' };
+}
+
+// validasi format LIVE (bukan validasi jawaban benar/salah) — biar mereka sadar salah nulis
+// jenis (angka romawi vs nama chord huruf) sebelum ngecek jawaban
+function isRomanFormat(s){
+  return /^[ivxIVX]+m?(\/[ivxIVX]+m?)?°?$/.test(s.trim());
+}
+function isChordFormat(s){
+  return /^[A-Ga-g](#|b)?m?(\/[A-Ga-g](#|b)?)?$/.test(s.trim());
+}
+
+function renderGbIntro(){
+  mainCard.innerHTML = `
+    ${gbHeader()}
+    <div class="gb-intro">
+      <div class="qtitle">🎓 Bedah Lagu</div>
+      <div class="badge-msg">Kamu udah belajar 8 step runtut untuk bisa main lagu dalam 1x, sekarang kita coba latih langsung 💪</div>
+      <button class="play-btn" id="gbStartBtn">Mulai</button>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderSongPractice(gb.song);
+  document.getElementById('gbStartBtn').onclick = ()=> renderGbKey();
+}
+
+const KEY_CLUES = [
+  'Clue 1: dengerin chord yang terasa "pulang" / paling selesai di lagu ini.',
+  'Clue 2: dengerin nada bass-nya waktu chord itu dimainkan.',
+  'Clue 3: kalau chord awal lagu belum kerasa "pulang", coba dengerin 1-2 chord berikutnya.'
+];
+
+function renderGbKey(state){
+  // state: undefined/'input' | 'wrong' | 'correct'
+  const keys = Object.keys(SCALE_TABLE);
+  const prevVal = gb.keyGuess || '';
+  const isCorrect = state === 'correct';
+  const isWrong = state === 'wrong';
+  let feedbackHtml = '';
+  if(isCorrect){
+    feedbackHtml = `<div class="gb-feedback ok">✅ Betul, nada dasarnya ada di <strong>do = ${gb.guide.key}</strong> karena terasa seperti pulang.</div>`;
+  } else if(isWrong){
+    const clueIdx = Math.min((gb.keyAttempts||1) - 1, KEY_CLUES.length - 1);
+    feedbackHtml = `<div class="gb-feedback no">❌ Belum tepat, coba lagi.<br>${KEY_CLUES[clueIdx]}</div>`;
+  }
+  mainCard.innerHTML = `
+    ${gbHeader('Halaman 1')}
+    <div class="qtitle">🎧 Dengerin lagunya dulu</div>
+    <div class="yt-embed-wrap compact" style="margin-bottom:16px;">
+      <iframe src="${embedUrl(gb.song.videoId, gb.song.startSeconds)}"
+        title="${gb.song.title}" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <div class="step-label">Menurutmu nada dasar lagu ini apa? (Harus benar dulu buat lanjut)</div>
+    <select class="gb-select ${isWrong?'wrong':isCorrect?'correct':''}" id="keySelect" ${isCorrect?'disabled':''}>
+      <option value="">— pilih nada dasar —</option>
+      ${keys.map(k=>`<option value="${k}" ${prevVal===k?'selected':''}>do = ${k}</option>`).join('')}
+    </select>
+    ${feedbackHtml}
+    <button class="play-btn" id="gbNextBtn" style="margin-top:6px;">${isCorrect ? 'Lanjut →' : 'Cek Jawaban ✓'}</button>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderSongPractice(gb.song);
+  document.getElementById('gbNextBtn').onclick = ()=>{
+    if(isCorrect){
+      renderGbAccompanyIntro();
+      return;
+    }
+    const val = document.getElementById('keySelect').value;
+    gb.keyGuess = val;
+    if(val === gb.guide.key){
+      renderGbKey('correct');
+    } else {
+      gb.keyAttempts = (gb.keyAttempts||0) + 1;
+      renderGbKey('wrong');
+    }
+  };
+}
+
+function renderGbAccompanyIntro(){
+  mainCard.innerHTML = `
+    ${gbHeader('Halaman 2')}
+    <div class="gb-intro">
+      <div class="qtitle">🎤 Fokus ke Cara Mengiringi</div>
+      <div class="badge-msg">Untuk melodinya kamu bisa cari sendiri ya — di sini kita fokus ke cara mengiringi lagunya. Anggap aja lagunya udah dinyanyiin vokalis, tugas kamu cuma iringi pakai chord & pattern yang pas.</div>
+      <div class="step-label" style="margin-top:12px;">Bagian struktur yang mau kita bahas: <strong>${gb.guide.structureParts.join(' - ')}</strong> — dibahas urut satu-satu dari kiri.</div>
+      <button class="play-btn" id="gbNextBtn" style="margin-top:14px;">Mulai Cari Progresi</button>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderSongPractice(gb.song);
+  document.getElementById('gbNextBtn').onclick = ()=> renderGbPartProgression(0);
+}
+
+function renderGbPartProgression(partIndex, checked){
+  gb.partIndex = partIndex;
+  const partName = gb.guide.structureParts[partIndex];
+  const part = gb.guide.allParts[partName];
+  if(!gb.progress[partName]){
+    gb.progress[partName] = { blanks: pickBlankMask(part.roman.length), answers: part.roman.map(()=>'') };
+  }
+  const prog = gb.progress[partName];
+  const isFirst = partIndex === 0;
+  const isLast = partIndex === gb.guide.structureParts.length - 1;
+
+  const clipHtml = (part.startSeconds !== undefined || part.endSeconds !== undefined)
+    ? `<div class="yt-embed-wrap compact" style="margin-bottom:16px;">
+        <iframe src="${embedUrl(gb.song.videoId, part.startSeconds, part.endSeconds)}"
+          title="${gb.song.title}" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>`
+    : '';
+
+  // render pakai notasi titik (kalau ada) biar ketukannya kelihatan & bisa diitung
+  let linesHtml;
+  // render 1 slot: voicing (kalau ada) selalu kelihatan & ga ikut di-blank, cuma chord utamanya yang jadi soal
+  function renderRomanSlot(fullToken, myRi){
+    const { main, voicing } = splitVoicing(fullToken);
+    const voicingHtml = voicing ? `<span class="gb-voicing">${voicing}</span>` : '';
+    if(prog.blanks[myRi]){
+      const val = prog.answers[myRi];
+      if(checked){
+        const grade = gradeToken(val, main);
+        const cls = grade === 'correct' ? 'correct' : grade === 'near' ? 'near' : 'wrong';
+        return `<div><input class="gb-blank ${cls}" value="${val}" disabled>${voicingHtml}${tokenFeedback(grade, main)}</div>`;
+      }
+      return `<div><input class="gb-blank" data-ri="${myRi}" maxlength="6" value="${val}">${voicingHtml}</div>`;
+    }
+    return `<div class="gb-token">${main}${voicingHtml}</div>`;
+  }
+
+  if(part.bars){
+    let ri = 0;
+    linesHtml = part.bars.map((line, li)=>{
+      const tokens = line.map(slot=>{
+        if(slot === null) return `<div class="gb-dot">•</div>`;
+        return renderRomanSlot(slot, ri++);
+      }).join('');
+      return `<div class="gb-line"><div class="gb-line-label">Baris ${li+1}</div><div class="gb-tokens">${tokens}</div></div>`;
+    }).join('');
+  } else {
+    const tokens = part.roman.map((r, ri)=> renderRomanSlot(r, ri)).join('');
+    linesHtml = `<div class="gb-line"><div class="gb-line-label">${partName}</div><div class="gb-tokens">${tokens}</div></div>`;
+  }
+
+  mainCard.innerHTML = `
+    ${gbHeader(`Halaman 3 — ${partIndex+1}/${gb.guide.structureParts.length}`)}
+    <div class="qtitle">🔢 Tebak Progresinya — [${partName}]</div>
+    ${clipHtml}
+    <div class="step-label">Tebak progresinya (I-VII). Titik (•) = ketukan lanjutan, ikut dihitung biar pas sama iramanya.</div>
+    ${linesHtml}
+    <div class="gb-nav">
+      <button class="btn-secondary" id="gbPrevBtn">← Sebelumnya</button>
+      <button class="play-btn" id="gbNextBtn" style="margin-bottom:0;">${checked ? (isLast ? 'Lanjut ke Translate Chord →' : 'Bagian Berikutnya →') : 'Cek Jawaban ✓'}</button>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderSongPractice(gb.song);
+  if(!checked){
+    document.querySelectorAll('.gb-blank').forEach(inp=>{
+      inp.oninput = ()=>{
+        const ri = +inp.getAttribute('data-ri');
+        prog.answers[ri] = inp.value.trim();
+        inp.classList.toggle('format-bad', inp.value.trim() !== '' && !isRomanFormat(inp.value));
+      };
+    });
+    attachEnterNav();
+  }
+  document.getElementById('gbPrevBtn').onclick = ()=>{
+    if(isFirst) renderGbAccompanyIntro();
+    else renderGbPartProgression(partIndex-1, true);
+  };
+  document.getElementById('gbNextBtn').onclick = ()=>{
+    if(!checked){ renderGbPartProgression(partIndex, true); return; }
+    if(isLast) renderGbChordTranslate();
+    else renderGbPartProgression(partIndex+1);
+  };
+}
+
+// rentang video gabungan: dari awal bagian pertama sampai akhir bagian terakhir
+function fullPartsRange(guide){
+  const parts = guide.structureParts.map(n=> guide.allParts[n]);
+  const start = parts[0].startSeconds;
+  const end = parts[parts.length-1].endSeconds;
+  return { start, end };
+}
+
+function renderGbChordTranslate(checked){
+  const key = gb.keyGuess || gb.guide.key;
+  gb.guide.structureParts.forEach(partName=>{
+    if(!gb.chordAnswers[partName]) gb.chordAnswers[partName] = gb.guide.allParts[partName].chords.map(()=>'');
+  });
+  const range = fullPartsRange(gb.guide);
+
+  const sectionsHtml = gb.guide.structureParts.map(partName=>{
+    const part = gb.guide.allParts[partName];
+    const romanLine = part.roman.join(' - ');
+    const chordHtml = part.chords.map((c, ci)=>{
+      const val = gb.chordAnswers[partName][ci];
+      if(checked){
+        const grade = gradeToken(val, c);
+        const cls = grade === 'correct' ? 'correct' : grade === 'near' ? 'near' : 'wrong';
+        return `<div><input class="gb-blank ${cls}" value="${val}" disabled>${tokenFeedback(grade, c)}</div>`;
+      }
+      return `<input class="gb-blank" data-part="${partName}" data-ci="${ci}" maxlength="6" value="${val}">`;
+    }).join('');
+    return `<div class="gb-line">
+      <div class="gb-line-label">[${partName}] <span style="color:var(--accent2);font-weight:700;">${romanLine}</span></div>
+      <div class="gb-tokens">${chordHtml}</div>
+    </div>`;
+  }).join('');
+
+  mainCard.innerHTML = `
+    ${gbHeader('Halaman 4')}
+    <div class="qtitle">🎼 Translate ke Chord</div>
+    <div class="yt-embed-wrap compact" style="margin-bottom:16px;">
+      <iframe src="${embedUrl(gb.song.videoId, range.start, range.end)}"
+        title="${gb.song.title}" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <div class="step-label">Nada dasar lagu ini <strong>do = ${key}</strong>. Berdasarkan progresi yang udah kebahas, chordnya jadi apa? (pakai tabel family chord di bawah kalau perlu)</div>
+    ${gb.guide.modulationNote ? `<div class="gb-feedback no" style="text-align:left;">⚠️ ${gb.guide.modulationNote}</div>` : ''}
+    ${renderChordTable(key)}
+    ${sectionsHtml}
+    <div class="gb-nav">
+      <button class="btn-secondary" id="gbPrevBtn">← Sebelumnya</button>
+      <button class="play-btn" id="gbNextBtn" style="margin-bottom:0;">${checked ? 'Lanjut →' : 'Cek Jawaban ✓'}</button>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderSongPractice(gb.song);
+  if(!checked){
+    attachEnterNav();
+    document.querySelectorAll('.gb-blank').forEach(inp=>{
+      inp.oninput = ()=>{
+        const partName = inp.getAttribute('data-part'), ci = +inp.getAttribute('data-ci');
+        gb.chordAnswers[partName][ci] = inp.value.trim();
+        inp.classList.toggle('format-bad', inp.value.trim() !== '' && !isChordFormat(inp.value));
+      };
+    });
+  }
+  document.getElementById('gbPrevBtn').onclick = ()=> renderGbPartProgression(gb.guide.structureParts.length-1, true);
+  document.getElementById('gbNextBtn').onclick = ()=> checked ? renderGbPattern() : renderGbChordTranslate(true);
+}
+
+function renderGbPattern(checked){
+  if(gb.patternOptions === undefined){
+    const correctIds = gb.guide.correctPatternIds || [];
+    const wrongPool = gb.guide.wrongPatternIds
+      ? PATTERN_BANK.filter(p=>gb.guide.wrongPatternIds.includes(p.id))
+      : PATTERN_BANK.filter(p=>!correctIds.includes(p.id));
+    const correctPicks = shuffle(PATTERN_BANK.filter(p=>correctIds.includes(p.id)), Math.random).slice(0,2);
+    const wrongPicks = shuffle(wrongPool, Math.random).slice(0,3);
+    gb.patternOptions = shuffle([...correctPicks, ...wrongPicks], Math.random);
+  }
+  const correctIds = gb.guide.correctPatternIds || [];
+  const optsHtml = gb.patternOptions.map(p=>{
+    const selected = gb.patternPicks.includes(p.id);
+    const isCorrectPattern = correctIds.includes(p.id);
+    let cls = '';
+    if(checked){
+      if(selected && isCorrectPattern) cls = ' correct';
+      else if(selected && !isCorrectPattern) cls = ' wrong-pick';
+      else if(!selected && isCorrectPattern) cls = ' missed';
+    } else if(selected) cls = ' selected';
+    const badge = checked && isCorrectPattern ? '✅' : (checked && selected && !isCorrectPattern ? '❌' : '');
+    return `<div class="pattern-pick${cls}" data-id="${p.id}" style="position:relative;">
+      ${badge ? `<span style="position:absolute;top:8px;right:10px;font-size:14px;">${badge}</span>` : ''}
+      ${renderPatternVisual(p)}
+    </div>`;
+  }).join('');
+
+  mainCard.innerHTML = `
+    ${gbHeader('Halaman 5')}
+    <div class="qtitle">🥁 Pilih Pattern yang Cocok</div>
+    <div class="step-label">${gb.guide.patternNote || ''} Pilih 2 pattern yang paling cocok buat lagu ini.</div>
+    ${optsHtml}
+    <div class="gb-nav">
+      <button class="btn-secondary" id="gbPrevBtn">← Sebelumnya</button>
+      <button class="play-btn" id="gbNextBtn" style="margin-bottom:0;" ${!checked && gb.patternPicks.length<2 ? 'disabled' : ''}>${checked ? 'Lihat Skor →' : 'Cek Jawaban ✓'}</button>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderSongPractice(gb.song);
+  if(!checked){
+    document.querySelectorAll('.pattern-pick').forEach(el=>{
+      el.onclick = ()=>{
+        const id = el.getAttribute('data-id');
+        if(gb.patternPicks.includes(id)){
+          gb.patternPicks = gb.patternPicks.filter(x=>x!==id);
+        } else if(gb.patternPicks.length < 2){
+          gb.patternPicks.push(id);
+        }
+        renderGbPattern();
+      };
+    });
+  }
+  document.getElementById('gbPrevBtn').onclick = ()=> renderGbChordTranslate(true);
+  document.getElementById('gbNextBtn').onclick = ()=> checked ? renderGbScore() : renderGbPattern(true);
+}
+
+function normTok(s){ return (s||'').toString().trim().toLowerCase().replace(/\s+/g,''); }
+
+// tekan Enter di kolom isian -> pindah ke kolom kosong berikutnya (bukan submit)
+function attachEnterNav(){
+  const inputs = [...document.querySelectorAll('.gb-blank:not([disabled])')];
+  inputs.forEach((inp, i)=>{
+    inp.onkeydown = (e)=>{
+      if(e.key !== 'Enter') return;
+      e.preventDefault();
+      const next = inputs[i+1];
+      if(next) next.focus();
+      else inp.blur();
+    };
+  });
+}
+
+function scoreFlat(blanks, answers, correct){
+  let total = 0, right = 0;
+  blanks.forEach((isBlank, i)=>{
+    if(!isBlank) return;
+    total++;
+    if(normTok(answers[i]) === normTok(correct[i])) right++;
+  });
+  return total === 0 ? 1 : right/total;
+}
+
+function renderGbScore(){
+  const keyScore = gb.keyGuess === gb.guide.key ? 1 : 0;
+
+  // rata-rata skor progresi dari semua bagian struktur
+  let progTotal = 0;
+  gb.guide.structureParts.forEach(partName=>{
+    const part = gb.guide.allParts[partName];
+    const prog = gb.progress[partName];
+    progTotal += scoreFlat(prog.blanks, prog.answers, part.roman);
+  });
+  const progScore = progTotal / gb.guide.structureParts.length;
+
+  // skor translate chord — gabungan semua bagian, semua terisi (bukan blank sebagian)
+  let chordRight = 0, chordTotal = 0;
+  gb.guide.structureParts.forEach(partName=>{
+    const part = gb.guide.allParts[partName];
+    const answers = gb.chordAnswers[partName];
+    part.chords.forEach((c, ci)=>{
+      chordTotal++;
+      if(normTok(answers[ci]) === normTok(c)) chordRight++;
+    });
+  });
+  const chordScore = chordTotal === 0 ? 1 : chordRight / chordTotal;
+
+  const correctIds = gb.guide.correctPatternIds || [];
+  const patternHits = gb.patternPicks.filter(id=>correctIds.includes(id)).length;
+  const patternScore = patternHits / 2;
+
+  const weights = { key:0.15, progression:0.30, chord:0.35, pattern:0.20 };
+  const total = keyScore*weights.key + progScore*weights.progression + chordScore*weights.chord + patternScore*weights.pattern;
+  const breakdownHtml = `
+    <div class="sb-row"><span>🎯 Nada Dasar</span><span>${Math.round(keyScore*100)}%</span></div>
+    <div class="sb-row"><span>🔢 Progresi (semua bagian)</span><span>${Math.round(progScore*100)}%</span></div>
+    <div class="sb-row"><span>🎼 Translate Chord</span><span>${Math.round(chordScore*100)}%</span></div>
+    <div class="sb-row"><span>🥁 Pattern</span><span>${Math.round(patternScore*100)}%</span></div>
+  `;
+
+  const finalScore = Math.max(1, Math.round(total*100));
+
+  let verdict;
+  if(finalScore >= 90) verdict = 'Gila, telinga & teori kamu udah matang! 🏆';
+  else if(finalScore >= 70) verdict = 'Bagus banget, tinggal dipoles dikit lagi.';
+  else if(finalScore >= 50) verdict = 'Lumayan, terus diasah ya.';
+  else verdict = 'Masih perlu banyak latihan, gapapa — coba lagi!';
+
+  if(!gb.summaryKey) gb.summaryKey = gb.guide.key;
+  const range = fullPartsRange(gb.guide);
+  const correctPatterns = PATTERN_BANK.filter(p=>correctIds.includes(p.id));
+
+  mainCard.innerHTML = `
+    ${gbHeader('Hasil')}
+    <div class="results">
+      <div class="qtitle" style="margin-bottom:0;">Hasil Bedah Lagu</div>
+      <div class="score-big">${finalScore}</div>
+      <div class="score-label">${verdict}</div>
+      <div class="score-breakdown">
+        ${breakdownHtml}
+      </div>
+      <div class="qtitle" style="text-align:left;font-size:16px;margin-top:22px;">📋 Ringkasan Jawaban Benar</div>
+      <div class="yt-embed-wrap compact" style="margin:10px 0 14px;">
+        <iframe src="${embedUrl(gb.song.videoId, range.start, range.end)}"
+          title="${gb.song.title}" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+      <div class="step-label" style="text-align:left;">Coba ganti nada dasar buat latihan — chord di bawah otomatis nyesuain.</div>
+      <select class="gb-select" id="summaryKeySelect">
+        ${Object.keys(SCALE_TABLE).map(k=>`<option value="${k}" ${k===gb.summaryKey?'selected':''}>do = ${k}</option>`).join('')}
+      </select>
+      <div id="summaryChords" style="text-align:left;"></div>
+      <div class="qtitle" style="text-align:left;font-size:16px;margin-top:18px;">Pattern yang cocok</div>
+      <div style="text-align:left;">
+        ${correctPatterns.map(p=>`<div class="gb-line">${renderPatternVisual(p)}</div>`).join('')}
+      </div>
+      <button class="play-btn" id="gbRetryBtn" style="margin-top:18px;">🔁 Ulangi Bagian Ini</button>
+      <button class="btn-secondary" id="gbDoneBtn" style="width:100%;margin-top:10px;">Selesai — Kembali ke Lagu</button>
+    </div>
+  `;
+  function renderSummaryChords(){
+    const key = gb.summaryKey;
+    document.getElementById('summaryChords').innerHTML = gb.guide.structureParts.map(partName=>{
+      const part = gb.guide.allParts[partName];
+      const label = `[${partName}] ${part.roman.join(' - ')}`;
+      // ikutin notasi titik (kalau ada) biar konsisten sama halaman tebak progresi
+      if(part.bars){
+        const linesHtml = part.bars.map((line, li)=>{
+          const tokens = line.map(slot=>{
+            if(slot === null) return `<div class="gb-dot">•</div>`;
+            const { main, voicing } = splitVoicing(slot);
+            const voicingHtml = voicing ? `<span class="gb-voicing">${voicing}</span>` : '';
+            return `<div class="gb-token">${chordForRoman(main, key)}${voicingHtml}</div>`;
+          }).join('');
+          return `<div class="gb-line"><div class="gb-line-label">${li===0?label:'&nbsp;'}</div><div class="gb-tokens">${tokens}</div></div>`;
+        }).join('');
+        return linesHtml;
+      }
+      return `<div class="gb-line"><div class="gb-line-label">${label}</div><div class="gb-tokens">${part.roman.map(r=>`<div class="gb-token">${chordForRoman(r,key)}</div>`).join('')}</div></div>`;
+    }).join('');
+  }
+  renderSummaryChords();
+  document.getElementById('summaryKeySelect').onchange = (e)=>{
+    gb.summaryKey = e.target.value;
+    renderSummaryChords();
+  };
+  document.getElementById('backBtn') && (document.getElementById('backBtn').onclick = ()=> renderSongPractice(gb.song));
+  document.getElementById('gbRetryBtn').onclick = ()=>{
+    const song = gb.song, guide = gb.guide;
+    startGuidedBreakdown(song, guide);
+  };
+  document.getElementById('gbDoneBtn').onclick = ()=> renderSongPractice(gb.song);
+}
+
+function renderStart(mode){
+  selectedMode = mode;
+  h1El.textContent = MODES[mode].title;
+  const p = loadProgress(mode);
+  if(p.lastPlayedKey === todayKey()){
+    setBadge('daily', p.streak);
+    renderAlreadyPlayed(p);
+    return;
+  }
+  setBadge('daily', p.streak || 0);
+  const noteHtml = mode === 'all'
+    ? `<div class="difficulty-note">
+        <span><span class="diff-dot" style="background:var(--green)"></span>Interval</span>
+        <span><span class="diff-dot" style="background:var(--accent)"></span>Chord</span>
+        <span><span class="diff-dot" style="background:var(--accent2)"></span>Progresi</span>
+      </div>`
+    : '';
+  mainCard.innerHTML = `
+    <button class="back-link" id="backBtn">← Ganti Mode</button>
+    <div class="start-screen">
+      <div class="qtitle">${MODES[mode].icon} ${MODES[mode].label}</div>
+      <p>${MODES[mode].desc}. Semua level bisa main!</p>
+      ${noteHtml}
+      <button class="play-btn" id="startBtn" style="margin-top:14px;">Mulai Sekarang</button>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderModeSelect();
+  document.getElementById('startBtn').onclick = ()=>{
+    isPractice = false;
+    questions = buildQuestions(dateSeed(), mode);
+    current = 0;
+    results = [];
+    renderQuestion();
+  };
+}
+
+function renderAlreadyPlayed(p){
+  mainCard.innerHTML = `
+    <button class="back-link" id="backBtn">← Ganti Mode</button>
+    <div class="results">
+      <div class="qtitle" style="margin-bottom:0;">Kamu sudah main hari ini</div>
+      <div class="score-big">${p.score}/${p.total}</div>
+      <div class="score-label">🔥 Streak ${p.streak} hari</div>
+      <div class="grid-preview">${p.grid}</div>
+      <div class="countdown-box">⏱ Soal baru dalam <span id="countdown">00:00:00</span></div>
+      <button class="share-btn" id="shareBtn">📋 Salin Hasil untuk Dibagikan</button>
+      <button class="retry-btn" id="practiceBtn">Main Lagi (Mode Latihan)</button>
+      <div class="copied-toast" id="toast"></div>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderModeSelect();
+  document.getElementById('shareBtn').onclick = ()=> copyShareText(p.score, p.total, p.grid);
+  document.getElementById('practiceBtn').onclick = ()=> startPractice();
+  const countdownEl = document.getElementById('countdown');
+  if(countdownTimer) clearInterval(countdownTimer);
+  countdownEl.textContent = formatCountdown(msUntilMidnight());
+  countdownTimer = setInterval(()=>{
+    countdownEl.textContent = formatCountdown(msUntilMidnight());
+  }, 1000);
+}
+
+function startPractice(){
+  if(countdownTimer) clearInterval(countdownTimer);
+  isPractice = true;
+  setBadge('practice');
+  questions = buildQuestions(Date.now(), selectedMode);
+  current = 0;
+  results = [];
+  renderQuestion();
+}
+
+function renderProgressDots(){
+  let html = '<div class="progress-row">';
+  for(let i=0;i<questions.length;i++){
+    let cls = 'dot';
+    if(i < results.length) cls += results[i] ? ' correct' : ' wrong';
+    else if(i === current) cls += ' current';
+    html += `<div class="${cls}"></div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderQuestion(){
+  answered = false;
+  const q = questions[current];
+  mainCard.innerHTML = `
+    ${renderProgressDots()}
+    <div class="qnum">Soal ${current+1} dari ${questions.length}</div>
+    <div class="qtitle">${q.title}</div>
+    ${q.subtitle ? `<div class="sub" style="text-align:left;margin:-14px 0 18px;">${q.subtitle}</div>` : ''}
+    <button class="play-btn" id="playBtn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      Putar Suara
+    </button>
+    <div class="options" id="optionsWrap">
+      ${q.options.map(opt=>`<button class="opt" data-opt="${opt}">${opt}</button>`).join('')}
+    </div>
+    <div class="explain-box" id="explainBox"></div>
+    <button class="next-btn" id="nextBtn">${current === questions.length-1 ? 'Lihat Hasil' : 'Soal Berikutnya →'}</button>
+  `;
+  document.getElementById('playBtn').onclick = ()=> q.play();
+  if(!q.subtitle) setTimeout(()=> q.play(), 300);
+
+  document.querySelectorAll('.opt').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(answered) return;
+      answered = true;
+      const chosen = btn.getAttribute('data-opt');
+      const correct = chosen === q.answer;
+      results.push(correct);
+      document.querySelectorAll('.opt').forEach(b=>{
+        b.disabled = true;
+        const val = b.getAttribute('data-opt');
+        if(val === q.answer) b.classList.add(correct ? 'selected-correct':'reveal-correct');
+        if(val === chosen && !correct) b.classList.add('selected-wrong');
+      });
+      const explanation = (EXPLANATIONS[q.type] || {})[q.answer] || '';
+      const explainBox = document.getElementById('explainBox');
+      explainBox.innerHTML = correct
+        ? `<strong>✅ Tepat!</strong> ${explanation}`
+        : `<strong>Bukan ${chosen}</strong> — jawabannya <strong>${q.answer}</strong>. ${explanation}`;
+      explainBox.classList.add('show');
+      document.getElementById('nextBtn').classList.add('show');
+    };
+  });
+
+  document.getElementById('nextBtn').onclick = ()=>{
+    if(current === questions.length-1){
+      renderResults();
+    } else {
+      current++;
+      renderQuestion();
+    }
+  };
+}
+
+function scoreEmoji(correct){ return correct ? '🟩' : '🟥'; }
+
+function copyShareText(score, total, grid){
+  const text = `Tebak Nada — ${todayString()}\n${score}/${total} ${grid}\n\nBerani coba? Kalahin skorku! 🎧\n${SITE_URL}`;
+  navigator.clipboard.writeText(text).then(()=>{
+    document.getElementById('toast').textContent = 'Disalin! Tempel di mana saja.';
+    setTimeout(()=> document.getElementById('toast').textContent = '', 2500);
+  }).catch(()=>{
+    document.getElementById('toast').textContent = text;
+  });
+}
+
+function renderResults(){
+  const score = results.filter(Boolean).length;
+  const total = results.length;
+  const grid = results.map(scoreEmoji).join('');
+  let verdict;
+  if(score === total) verdict = "Telinga emas. 🎯";
+  else if(score >= total*0.75) verdict = "Telingamu tajam banget.";
+  else if(score >= total*0.5) verdict = "Lumayan! Masih bisa diasah.";
+  else verdict = "Semua orang mulai dari nol 🌱";
+
+  let streakLine = '';
+  let resetNote = '';
+  if(!isPractice){
+    const updated = recordDailyResult(selectedMode, score, total, grid);
+    setBadge('daily', updated.streak);
+    if(updated.streak > 1) streakLine = `<div class="score-label">🔥 Streak ${updated.streak} hari berturut-turut!</div>`;
+    resetNote = `<div class="countdown-box">🔄 Soal baru tiap hari jam 00:00 — balik lagi besok!</div>`;
+    fetch('/wp-admin/admin-ajax.php?action=tebaknada_count', {method:'POST'}).catch(()=>{});
+  }
+
+  mainCard.innerHTML = `
+    <button class="back-link" id="backBtn">← Ganti Mode</button>
+    <div class="results">
+      <div class="qtitle" style="margin-bottom:0;">${isPractice ? 'Hasil Latihan' : 'Hasil Hari Ini'}</div>
+      <div class="score-big">${score}/${total}</div>
+      <div class="score-label">${verdict}</div>
+      ${streakLine}
+      <div class="grid-preview">${grid}</div>
+      ${resetNote}
+      <button class="share-btn" id="shareBtn">📋 Salin Hasil untuk Dibagikan</button>
+      <button class="retry-btn" id="retryBtn">Main Lagi (Mode Latihan)</button>
+      <div class="copied-toast" id="toast"></div>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick = ()=> renderModeSelect();
+  document.getElementById('shareBtn').onclick = ()=> copyShareText(score, total, grid);
+  document.getElementById('retryBtn').onclick = ()=> startPractice();
+}
+
+renderModeSelect();
+</script>
+</body>
+</html>
