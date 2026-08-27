@@ -2265,6 +2265,8 @@ function renderAlreadyPlayed(p){
       <div class="grid-preview">${p.grid}</div>
       <div class="countdown-box">⏱ Soal baru dalam <span id="countdown">00:00:00</span></div>
       <button class="share-btn" id="shareBtn">📋 Salin Hasil untuk Dibagikan</button>
+      <a class="cta-btn" id="ctaBtn" href="https://mustimusik.id" target="_blank" rel="noopener">🎵 Kunjungi Musti Musik →</a>
+      <div class="cta-sub">Cek kelas & program musik lainnya di Musti Musik.</div>
       <button class="retry-btn" id="practiceBtn">Main Lagi (Mode Latihan)</button>
       <div class="copied-toast" id="toast"></div>
     </div>
@@ -2272,6 +2274,7 @@ function renderAlreadyPlayed(p){
   document.getElementById('backBtn').onclick = ()=> renderModeSelect();
   document.getElementById('shareBtn').onclick = ()=> copyShareText(p.score, p.total, p.grid);
   document.getElementById('practiceBtn').onclick = ()=> startPractice();
+  document.getElementById('ctaBtn').onclick = ()=> fetch('/wp-admin/admin-ajax.php?action=tebaknada_cta_click', {method:'POST'}).catch(()=>{});
   const countdownEl = document.getElementById('countdown');
   if(countdownTimer) clearInterval(countdownTimer);
   countdownEl.textContent = formatCountdown(msUntilMidnight());
@@ -2398,6 +2401,8 @@ function renderResults(){
       <div class="grid-preview">${grid}</div>
       ${resetNote}
       <button class="share-btn" id="shareBtn">📋 Salin Hasil untuk Dibagikan</button>
+      <a class="cta-btn" id="ctaBtn" href="https://mustimusik.id" target="_blank" rel="noopener">🎵 Kunjungi Musti Musik →</a>
+      <div class="cta-sub">Cek kelas & program musik lainnya di Musti Musik.</div>
       <button class="retry-btn" id="retryBtn">Main Lagi (Mode Latihan)</button>
       <div class="copied-toast" id="toast"></div>
     </div>
@@ -2405,6 +2410,7 @@ function renderResults(){
   document.getElementById('backBtn').onclick = ()=> renderModeSelect();
   document.getElementById('shareBtn').onclick = ()=> copyShareText(score, total, grid);
   document.getElementById('retryBtn').onclick = ()=> startPractice();
+  document.getElementById('ctaBtn').onclick = ()=> fetch('/wp-admin/admin-ajax.php?action=tebaknada_cta_click', {method:'POST'}).catch(()=>{});
 }
 
 renderModeSelect();
