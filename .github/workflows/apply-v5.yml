@@ -1,0 +1,41 @@
+name: Apply v5 pattern and modulation fixes
+
+on:
+  push:
+    branches:
+      - fix-v5-pattern-modulation
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply v5 fixes
+        run: python3 apply_v5.py
+
+      - name: Validate JavaScript and PHP
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s = Path('index.html').read_text(encoding='utf-8')
+          Path('/tmp/app.js').write_text(s[s.index('<script>')+8:s.rindex('</script>')], encoding='utf-8')
+          PY
+          node --check /tmp/app.js
+          php -l wordpress-snippet.php
+
+      - name: Commit final v5
+        run: |
+          rm -f apply_v5.py
+          rm -f .github/workflows/apply-v5.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Fix Marry and Until patterns; add Beauty modulation flow"
+          git push origin HEAD:fix-v5-pattern-modulation
