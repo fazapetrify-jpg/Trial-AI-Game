@@ -356,7 +356,10 @@
     width:100%; height:100%;
     border:0;
   }
-  .yt-embed-wrap.compact{padding-bottom:32%;}
+  .yt-embed-wrap.compact{padding-bottom:42%;}
+  @media (max-width:480px){
+    .yt-embed-wrap.compact{padding-bottom:56.25%;}
+  }
   .step-dots{
     display:flex;
     gap:5px;
@@ -926,8 +929,8 @@ const PATTERN_BANK = [
     visual:{ beats:9, triplet:true, rh:['V',null,null,'V',null,null,'V',null,null], lh:['1',null,null,'1',null,null,'V','1',null] } },
   { id:'p128_1', group:'12/8', name:'12/8 Pattern 1', tag:'Feel triplet mengayun & mengalun.',
     visual:{ beats:12, triplet:true, rh:['V',null,null,'V',null,null,'V',null,null,'V',null,null], lh:['1','5',"1'","1'",'5','1','5',"1'","1'",'5',null,null] } },
-  { id:'p128_2', group:'12/8', name:'12/8 Pattern 2', tag:'Stab + bass triplet, kombinasi mengayun & tegas (detail lengkap ada di video pendamping).',
-    visual:{ beats:12, triplet:true, rh:['V',null,null,'V',null,null,'V',null,null,null,null,null], lh:['1',null,null,'1',null,null,'1','V',null,'1',null,null] } },
+  { id:'p128_2', group:'12/8', name:'12/8 Pattern 2', tag:'Stab jarang, kesan mengayun & lega.',
+    visual:{ beats:12, triplet:true, rh:['V',null,null,null,null,null,'V',null,null,null,null,null], lh:['1',null,null,null,null,null,'1',null,null,null,null,null] } },
   { id:'p128_3', group:'12/8', name:'12/8 Pattern 3', tag:'Kesan penuh & mengayun kuat.',
     visual:{ beats:12, triplet:true, rh:['V','V','V','V','V','V','V','V','V','V','V','V'], lh:['1',null,'5',null,"1'",null,'5',null,'1',null,'5',null] } },
   { id:'p68', group:'6/8', name:'Pattern 6/8', tag:'Cocok lagu pop mengayun & emosional.',
@@ -995,21 +998,31 @@ const SONG_GUIDES = {
           ['I',null,null,null, 'V',null,null,null, 'I',null,null,null, 'V',null,null,null]
         ]
       },
-      // progresi verse & chorus di sini cukup padat (banyak slash chord bertumpuk di guide asli),
-      // urutan chord-nya udah sesuai guide tapi presisi ketukan per-titik disederhanakan jadi flat list.
-      'Verse': {
+      'Verse': { // (diulang 2x) sesuai guide
         roman:['I','V','VIm','V','IV','I/IIIm','I/IV','I/V','I/VI','VIIb','I/VI','I/V','V',
                'I','V','VIm','V','IV','I/IIIm','I/IV','I/V','I/VI','VIIb','I/VI','I/V','V'],
         chords:['A','E','F#m','E','D','A/C#','A/D','A/E','A/F#','G','A/F#','A/E','E',
                 'A','E','F#m','E','D','A/C#','A/D','A/E','A/F#','G','A/F#','A/E','E'],
-        time:'0:14 – 1:05', startSeconds:14, endSeconds:65
+        time:'0:14 – 1:05', startSeconds:14, endSeconds:65,
+        bars: [
+          ['I',null,null,null, 'V',null,null,null, 'VIm',null,'V',null, 'IV',null,null,null],
+          ['I/IIIm',null,'I/IV',null, 'I/V',null,'I/VI',null, 'VIIb',null,'I/VI',null, 'I/V',null,'V',null],
+          ['I',null,null,null, 'V',null,null,null, 'VIm',null,'V',null, 'IV',null,null,null],
+          ['I/IIIm',null,'I/IV',null, 'I/V',null,'I/VI',null, 'VIIb',null,'I/VI',null, 'I/V',null,'V',null]
+        ]
       },
       'Chorus': {
         roman:['I','VIm','IV','V','I','VIm','IV','V','VIm','IV','V','IV/VI','V/VII','V',
                'I','VIm','IV','V','I','VIm','IV','V','VIm','IV','V','I'],
         chords:['A','F#m','D','E','A','F#m','D','E','F#m','D','E','D/F#','E/G#','E',
                 'A','F#m','D','E','A','F#m','D','E','F#m','D','E','A'],
-        time:'1:05 – 1:52', startSeconds:65, endSeconds:112
+        time:'1:05 – 1:52', startSeconds:65, endSeconds:112,
+        bars: [
+          ['I',null,'VIm',null, 'IV',null,'V',null, 'I',null,'VIm',null, 'IV',null,'V',null],
+          ['VIm',null,null,null, 'IV',null,null,null, 'V',null,'IV/VI',null, 'V/VII',null,'V',null],
+          ['I',null,'VIm',null, 'IV',null,'V',null, 'I',null,'VIm',null, 'IV',null,'V',null],
+          ['VIm',null,null,null, null,null,null,null, 'IV',null,'V',null, 'I',null,null,null]
+        ]
       }
     },
     patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
@@ -1027,7 +1040,7 @@ const SONG_GUIDES = {
         bars: [
           ['IV(Maj7)',null,null,null, null,null,null,null, 'V/VI',null,null,null, null,null,null,null,
            'III(minor7)',null,null,null, null,null,null,null, 'VI(minor7)',null,null,null, null,null,null,null,
-           'II(minor7)',null,null,null, null,null,null,null, 'IV/V',null,null,null,
+           'II(minor7)',null,null,null, null,null,null,null, 'IV/V',null,null,null, null,null,null,null,
            'I',null,null,null, null,null,null,null, 'V(minor7)',null,null,null, 'I',null,null,null]
         ]
       },
@@ -1038,7 +1051,7 @@ const SONG_GUIDES = {
         bars: [
           ['IV(Maj7)',null,null,null, null,null,null,null, 'V/VI',null,null,null, null,null,null,null,
            'III(minor7)',null,null,null, null,null,null,null, 'VI(minor7)',null,null,null, null,null,null,null,
-           'II(minor7)',null,null,null, null,null,null,null, 'IV/V',null,null,null,
+           'II(minor7)',null,null,null, null,null,null,null, 'IV/V',null,null,null, null,null,null,null,
            'I',null,null,null, null,null,null,null, 'V(minor7)',null,null,null, 'I',null,null,null]
         ]
       }
@@ -1103,11 +1116,13 @@ const SONG_GUIDES = {
           ['I',null,null,null, null,null,null,null, null,null,null,null, null,null,null,null, null,null,null,null]
         ]
       },
-      'Verse': {
-        roman:['I','IV','I','V','IV','I'],
-        chords:['A','D','A','E','D','A'],
+      'Verse': { // (diulang 2x) sesuai guide
+        roman:['I','IV','I','V','IV','I', 'I','IV','I','V','IV','I'],
+        chords:['A','D','A','E','D','A', 'A','D','A','E','D','A'],
         time:'0:26 – 0:55', startSeconds:26, endSeconds:55,
         bars: [
+          ['I',null,null,null, null,null,'IV',null, 'I',null,null,null, null,null,null,null,
+           'V',null,null,null, 'IV',null,null,null, 'I',null,null,null, null,null,null,null],
           ['I',null,null,null, null,null,'IV',null, 'I',null,null,null, null,null,null,null,
            'V',null,null,null, 'IV',null,null,null, 'I',null,null,null, null,null,null,null]
         ]
@@ -1170,7 +1185,8 @@ const SONG_GUIDES = {
       'Intro': {
         roman:['I'],
         chords:['Bb'],
-        time:'0:00 – 0:06', startSeconds:0, endSeconds:6
+        time:'0:00 – 0:06', startSeconds:0, endSeconds:6,
+        bars: [['I',null,null,null, null,null,null,null]] // ada jeda 1 birama penuh setelah I
       },
       'Verse': {
         roman:['I','I','IV','IV/V','V', 'I','I','I','I','IV','V','I','I','V/VII'],
@@ -1193,25 +1209,45 @@ const SONG_GUIDES = {
     key: 'Bb',
     structureParts: ['Intro','Verse','Prechorus','Chorus'],
     allParts: {
-      'Intro': {
-        roman:['I','I','V/VII','I/VI','I/VI','I/V','IV','I/V','V'],
-        chords:['Bb','Bb','F/A','Bb/G','Bb/G','Bb/F','Eb','Bb/F','F'],
-        time:'0:00 – 0:19', startSeconds:0, endSeconds:19
+      // guide asli pakai 5 titik per chord (6 ketukan/segmen), sama kayak Until I Found You —
+      // bukan 3 titik kayak lagu Worship.
+      'Intro': { // revisi terbaru: cuma 1x "I" dan 1x "I/VI" (nggak diulang)
+        roman:['I','V/VII','I/VI','I/V','IV','I/V','V'],
+        chords:['Bb','F/A','Bb/G','Bb/F','Eb','Bb/F','F'],
+        time:'0:00 – 0:19', startSeconds:0, endSeconds:19,
+        bars: [[ // "I/V..IV" berbagi 1 birama pendek (slash chord)
+          'I',null,null,null,
+          'V/VII',null,null,null,
+          'I/VI',null,null,null,
+          'I/V',null,'IV',null,
+          null,null,null,null,
+          'I/V',null,null,null,
+          'V',null,null,null
+        ]]
       },
       'Verse': {
         roman:['IV','IIIm','VIm','V/VII','I', 'IV','IIIm','VIm','V/VII','I'],
         chords:['Eb','Dm','Gm','F/A','Bb', 'Eb','Dm','Gm','F/A','Bb'],
-        time:'0:19 – 0:51', startSeconds:19, endSeconds:51
+        time:'0:19 – 0:51', startSeconds:19, endSeconds:51,
+        bars: [ // "V/VII..I" berbagi 1 birama pendek, ada jeda setelah IV & IIIm, tiap pengulangan
+          ['IV',null,null,null,null,null, null,null,null,null,null,null, 'IIIm',null,null,null,null,null, null,null,null,null,null,null, 'VIm',null,null,null,null,null, 'V/VII',null,'I',null],
+          ['IV',null,null,null,null,null, null,null,null,null,null,null, 'IIIm',null,null,null,null,null, null,null,null,null,null,null, 'VIm',null,null,null,null,null, 'V/VII',null,'I',null]
+        ]
       },
       'Prechorus': {
         roman:['IIm','VIm','V'],
         chords:['Cm','Gm','F'],
-        time:'0:51 – 1:01', startSeconds:51, endSeconds:61
+        time:'0:51 – 1:01', startSeconds:51, endSeconds:61,
+        bars: [['IIm',null,null,null,null,null, null,null,null,null,null,null, 'VIm',null,null,null,null,null, null,null,null,null,null,null, 'V',null,null,null,null,null]]
       },
-      'Chorus': {
+      'Chorus': { // "...V/VII.." & "...V.." = chord masuk di tengah birama (bukan di ketuk 1)
         roman:['I','V/VII','VIm','V','IV','I/V','V'],
         chords:['Bb','F/A','Gm','F','Eb','Bb/F','F'],
-        time:'1:01 – 1:22', startSeconds:61, endSeconds:82
+        time:'1:01 – 1:22', startSeconds:61, endSeconds:82,
+        bars: [
+          ['I',null,null,null,null,null, null,null,null,'V/VII',null,null, 'VIm',null,null,null,null,null, null,null,null,'V',null,null],
+          ['IV',null,null,null,null,null, null,null,null,null,null,null, 'I/V',null,null,null,null,null, 'V',null,null,null,null,null]
+        ]
       }
     },
     patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
@@ -1256,21 +1292,38 @@ const SONG_GUIDES = {
       'Intro': {
         roman:['I','IIIm','IV','IVm'],
         chords:['Bb','Dm','Eb','Ebm'],
-        time:'0:00 – 0:14', startSeconds:0, endSeconds:14
+        time:'0:00 – 0:14', startSeconds:0, endSeconds:14,
+        // guide asli pakai 5 titik per chord (6 ketukan/segmen), bukan 3 kayak lagu Worship
+        bars: [[ // ada 2 birama jeda penuh di akhir intro
+          'I',null,null,null,null,null, 'IIIm',null,null,null,null,null, 'IV',null,null,null,null,null, 'IVm',null,null,null,null,null,
+          null,null,null,null,null,null, null,null,null,null,null,null
+        ]]
       },
       'Verse': {
         roman:['I','IIIm/VII','IV','IVm', 'I','IIIm/VII','IV','IVm',
                'I','IIIm/VII','IV','IVm', 'I','V','IV/V'],
         chords:['Bb','Dm/A','Eb','Ebm', 'Bb','Dm/A','Eb','Ebm',
                 'Bb','Dm/A','Eb','Ebm', 'Bb','F','Eb/F'],
-        time:'0:14 – 0:42', startSeconds:14, endSeconds:42
+        time:'0:14 – 0:42', startSeconds:14, endSeconds:42,
+        bars: [ // I & IIIm/VII = 6 ketukan (5 titik), tapi IV & IVm lebih pendek = 3 ketukan (2 titik)
+          ['I',null,null,null,null,null, null,null,null,null,null,null, 'IIIm/VII',null,null,null,null,null, 'IV',null,null, 'IVm',null,null],
+          ['I',null,null,null,null,null, null,null,null,null,null,null, 'IIIm/VII',null,null,null,null,null, 'IV',null,null, 'IVm',null,null],
+          ['I',null,null,null,null,null, null,null,null,null,null,null, 'IIIm/VII',null,null,null,null,null, 'IV',null,null, 'IVm',null,null],
+          ['I',null,null,null,null,null, null,null,null,null,null,null, 'V',null,null,null, 'IV/V',null,null,null,null,null, null,null,null,null,null,null]
+        ]
       },
       'Chorus': {
         roman:['IV','V','I','IIIm','IV','V','I','I(7)',
                'IV','V','I','IIIm','IV','IVm'],
         chords:['Eb','F','Bb','Dm','Eb','F','Bb','Bb',
                 'Eb','F','Bb','Dm','Eb','Ebm'],
-        time:'0:42 – 1:13', startSeconds:42, endSeconds:73
+        time:'0:42 – 1:13', startSeconds:42, endSeconds:73,
+        bars: [
+          ['IV',null,null,null,null,null, 'V',null,null,null,null,null, 'I',null,null,null,null,null, 'IIIm',null,null,null,null,null,
+           'IV',null,null,null,null,null, 'V',null,null,null,null,null, 'I',null,null,null,null,null, 'I(7)',null,null,null,null,null],
+          ['IV',null,null,null,null,null, 'V',null,null,null,null,null, 'I',null,null,null,null,null, 'IIIm',null,null,null,null,null,
+           'IV',null,null,null,null,null, null,null,null,null,null,null, 'IVm',null,null,null,null,null, null,null,null,null,null,null]
+        ]
       }
     },
     patternNote:'Pattern bisa pakai semua lagu cepat dan lambat.',
@@ -1278,6 +1331,16 @@ const SONG_GUIDES = {
     wrongPatternIds:['lambat6','cepat2','lambat4']
   }
 };
+
+// buat bagian yang belum ada notasi titik manual (bars), auto-generate dari progresi flat-nya:
+// tiap chord dianggap ngisi 1 birama 4 ketukan (chord di ketukan 1, titik/rest di ketukan 2-4).
+Object.values(SONG_GUIDES).forEach(guide=>{
+  Object.values(guide.allParts).forEach(part=>{
+    if(!part.bars){
+      part.bars = [part.roman.flatMap(r=>[r,null,null,null])];
+    }
+  });
+});
 
 const BREAKDOWN_STEPS = [
   { icon:'🎯', title:'Cari Nada Dasar' },
@@ -1579,7 +1642,7 @@ function renderSongPractice(song){
     <div class="qtitle">${song.title}</div>
     <div class="sub" style="text-align:left;margin:-14px 0 16px;">${song.artist}</div>
     <div class="yt-embed-wrap">
-      <iframe src="https://www.youtube.com/embed/${song.videoId}${song.startSeconds ? `?start=${song.startSeconds}` : ''}"
+      <iframe src="${embedUrl(song.videoId, song.startSeconds)}"
         title="${song.title}" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
@@ -1610,7 +1673,7 @@ function renderSongBreakdown(song, stepIndex){
     <button class="back-link" id="backBtn">← Kembali ke Lagu</button>
     <div class="qnum">${song.title} — ${song.artist}</div>
     <div class="yt-embed-wrap compact" style="margin-bottom:16px;">
-      <iframe src="https://www.youtube.com/embed/${song.videoId}${song.startSeconds ? `?start=${song.startSeconds}` : ''}"
+      <iframe src="${embedUrl(song.videoId, song.startSeconds)}"
         title="${song.title}" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
@@ -1752,12 +1815,14 @@ function gbHeader(subtitle){
   `;
 }
 
-// bikin src embed YouTube yang beneran berhenti di endSeconds (pakai param `end` bawaan YouTube)
+// bikin src embed YouTube yang beneran berhenti di endSeconds (pakai param `end` bawaan YouTube).
+// rel=0 & modestbranding=1 & fs=0 ngurangin overlay/tombol yang bisa nyasar ke YouTube kalau kepencet,
+// loop+playlist bikin videonya muter ulang sendiri (nggak nyampe end-screen yang penuh saran video lain).
 function embedUrl(videoId, startSeconds, endSeconds){
-  const params = [];
+  const params = ['rel=0','modestbranding=1','fs=0','playsinline=1','loop=1',`playlist=${videoId}`];
   if(startSeconds) params.push(`start=${startSeconds}`);
   if(endSeconds) params.push(`end=${endSeconds}`);
-  return `https://www.youtube.com/embed/${videoId}${params.length ? '?' + params.join('&') : ''}`;
+  return `https://www.youtube.com/embed/${videoId}?${params.join('&')}`;
 }
 
 // grading token yang bisa kasih status "nyaris betul" (kuning) buat slash chord (mis. IV/I)
