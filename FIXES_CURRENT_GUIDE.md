@@ -52,3 +52,9 @@ The runtime currently follows the **detailed numbered sections**, because those 
 
 ## Remaining ambiguity
 A few pattern-table positions are represented only by spacing in pasted proportional text. Where the intended subdivision could not be proven from the source, the code avoids inventing additional musical information. The explicit chord/dot notation itself has been aligned as closely as the supplied text supports.
+
+
+## v5 follow-up fixes
+- **12/8 Pattern 1:** corrected the two intended LH rests (start of beat 2 and start of beat 4). This fixes the pattern shown for Marry Your Daughter and Until I Found You, and keeps A Thousand Years consistent because it uses the same guide pattern.
+- **Until I Found You:** the second correct pattern is now shown/classified as 12/8 Full (RH on all 12 subdivisions, LH on beats 1 and 3), not 6/8.
+- **Beauty and the Beast:** added an explicit do=E → do=Eb key timeline. The progression page marks the modulation at Verse Baris 3, the chord-writing page shows both E and Eb family-chord tables and separates the Eb chord entries, and the summary keeps the modulation visible when transposed.

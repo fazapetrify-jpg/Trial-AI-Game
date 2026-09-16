@@ -171,7 +171,7 @@ I-V-IIm7-I/V-V, I-V-IIm-IIIm-IV-V-VIm-V/VII-IIm, I-V-IIm7-IVm, I-V-IIm-IIIm-IV-I
 I-V/VII-IIm-IV-V, I-V-IIm-IIIm-IV-V, I-V/VII-IIm-IVm, IIIm-VIm-VIIb-IVm-i
 → B-F#/A#-C#m-E-F#, ..., D#m-G#m-A-Em-Bm
 
-**Pattern benar:** 12/8 Pattern 1, 12/8 Pattern 2
+**Pattern benar:** 12/8 Pattern 1 (LH: 1–5–1’ | rest–1’–5 | 1–5–1’ | rest–1’–5), 12/8 Pattern 2
 **Pattern salah:** Lambat 6, Cepat 2, Lambat 4
 
 ---
@@ -190,7 +190,7 @@ I • IIIm/VII-IV-IVm (×3), lalu I • V-IV/V
 IV-V-I-IIIm-IV-V-I-I7, IV-V-I-IIIm-IV • IVm • (ada jeda di baris ke-2)
 → Eb-F-Bb-Dm-Eb-F-Bb-Bb, Eb-F-Bb-Dm-Eb-Ebm
 
-**Pattern benar:** 12/8 Pattern 1, 6/8 Pattern
+**Pattern benar:** 12/8 Pattern 1, 12/8 Pattern Full (RH di semua 12 subdivisi; LH di ketukan 1 dan 3)
 **Pattern salah:** Lambat 6, Cepat 2, Lambat 4
 
 ---

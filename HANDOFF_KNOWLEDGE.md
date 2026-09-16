@@ -66,3 +66,9 @@ Kalau dapet foto/screenshot guide yang blur/susah dihitung titiknya SATU-SATU se
 
 ---
 *Catatan: dokumen ini nggak berisi lirik lagu apa pun — cuma notasi teori musik (angka romawi, chord huruf, titik ketukan) dan catatan proses kerja.*
+
+
+## v5 follow-up
+- 12/8 Pattern 1 mengikuti spacing guide: LH `1 5 1’ | rest 1’ 5 | 1 5 1’ | rest 1’ 5`.
+- Until I Found You memakai Pattern 12/8 Full sebagai pilihan benar kedua, bukan label 6/8.
+- Beauty and the Beast memiliki key timeline eksplisit: Intro/awal Verse do=E, Verse Baris 3 mulai modulasi ke do=Eb, Chorus tetap do=Eb. Halaman Translate Chord menampilkan family chord E dan Eb serta memisahkan isian sebelum/sesudah modulasi.
