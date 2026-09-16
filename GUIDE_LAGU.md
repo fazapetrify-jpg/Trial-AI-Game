@@ -74,7 +74,15 @@ IVmaj7 - V/VI - IIIm7 - VIm7 - IIm7 - IV/V - I - Vm7 - I
 **Chorus** (1:09–1:34): IV - VIm - V - IIIm - VIm - IIm - VIm - V - I
 → Bb - Dm - C - Am - Dm - Gm - Dm - C - F
 
-**Pattern benar:** Cepat 1, Cepat 3
+**Pattern benar:** Cepat 1, Holy Forever Pattern 2
+
+| Pattern | Ketukan RH | Ketukan LH |
+| --- | --- | --- |
+| Cepat 1 | 1 | 1 |
+| Holy Forever Pattern 2 | 1, 2, 3, 4 | 1, 3 |
+
+Keduanya memakai grid `1 n 2 n 3 n 4 n`; semua isian adalah `V`, dan sela `n` kosong.
+
 **Pattern salah:** 6/8 Pattern, Cepat 4, Lambat 14
 
 ---
@@ -99,17 +107,17 @@ IVmaj7 - V/VI - IIIm7 - VIm7 - IIm7 - IV/V - I - Vm7 - I
 
 ## POP
 
-### 6. Beauty and the Beast — do = E (modulasi turun 3 setengah-nada ke do = Db di pertengahan Verse)
+### 6. Beauty and the Beast — do = E (modulasi ke do = Eb di pertengahan Verse)
 **Struktur:** Intro → Verse → Chorus
 
 **Intro** (0:10–0:23): I - IV/I - I - IV/I → E - A/E - E - A/E
 
-**Verse** (0:23–1:07) — bagian pertama masih do=E, bagian kedua sudah do=Db:
+**Verse** (0:23–1:07) — bagian pertama masih do=E, bagian kedua sudah do=Eb:
 I - IV/I - I - IV/I - I - IIIm - IV - IV/V *(modulasi)* I - IV/I - I - I(dominant11) - I - IIIm - IV - IV - IIIm - IIm - V - I
-→ E-A/E-E-A/E-E-G#m-A-A/B-Db-Gb/Db-Db-Db-Db-Fm-Gb-Gb-Fm-Ebm-Ab-Db
+→ E-A/E-E-A/E-E-G#m-A-A/B-Eb-Ab/Eb-Eb-Eb-Eb-Gm-Ab-Ab-Gm-Fm-Bb-Eb
 
-**Chorus** (1:07–1:32, do=Db): IIIm - IV - IIIm - IV - IIIm - VIm - VIIb - V
-→ Fm - Gb - Fm - Gb - Fm - Bbm - Cb - Ab
+**Chorus** (1:07–1:32, do=Eb): IIIm - IV - IIIm - IV - IIIm - VIm - VIIb - V
+→ Gm - Ab - Gm - Ab - Gm - Cm - Db - Bb
 
 **Pattern benar:** Lambat 1, Lambat 4
 **Pattern salah:** Cepat 4, Cepat 5, Cepat 6
@@ -136,8 +144,8 @@ IV-V-I-V/VII-VIm-V, IV-V-I-VIIb/I-IIIm
 ### 8. A Thousand Years — do = Bb
 **Struktur:** Intro → Verse → Prechorus → Chorus
 
-**Intro** (0:00–0:19): I-I-V/VII-I/VI-I/VI-I/V-IV • • • •-I/V-V (ada jeda setelah IV)
-→ Bb-Bb-F/A-Bb/G-Bb/G-Bb/F-Eb-Bb/F-F
+**Intro** (0:00–0:19): I-V/VII-I/VI-I/V-IV • • • •-I/V (ada jeda setelah IV)
+→ Bb-F/A-Bb/G-Bb/F-Eb-Bb/F
 
 **Verse** (0:19–0:51, diulang, ada jeda setelah IV & IIIm): IV-IIIm-VIm-V/VII-I
 → Eb-Dm-Gm-F/A-Bb

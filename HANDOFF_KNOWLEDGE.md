@@ -54,7 +54,7 @@ Kalau dapet foto/screenshot guide yang blur/susah dihitung titiknya SATU-SATU se
 | I Sing Praises | G | ✅ lengkap | Cepat 2, Cepat 3 | Lambat 10, 11, 12 |
 | Holy Forever | F | ✅ lengkap | Cepat 1, Cepat 3 | 6/8, Cepat 4, Lambat 14 |
 | Praise | A | ✅ lengkap (Verse diulang 2x) | Cepat 1, Cepat 2 | Lambat 11, 13, Cepat 4 |
-| Beauty and the Beast | E→Db (modulasi turun 3 semitone di tengah Verse) | ✅ lengkap kecuali bagian modulasi (pendekatan, bukan titik-perfect) | Lambat 1, Lambat 4 | Cepat 4, 5, 6 |
+| Beauty and the Beast | E→Eb (modulasi ke Eb di tengah Verse) | ✅ lengkap kecuali bagian modulasi (pendekatan, bukan titik-perfect) | Lambat 1, Lambat 4 | Cepat 4, 5, 6 |
 | Endless Love | Bb | ✅ lengkap (Intro ada jeda) | Cepat 2, Lambat 4 | Lambat 10, 11, 12 |
 | A Thousand Years | Bb | ✅ lengkap, 6 ketukan/segmen, ada pairing "X..Y" | 12/8 Pattern 1, 12/8 Pattern 2 | Lambat 6, Cepat 2, Lambat 4 |
 | Marry Your Daughter | B | ⚠️ **BELUM ada notasi titik manual** — masih fallback 4-ketukan rata (progresi guide asli pakai tanda hubung "-" yang nggak jelas durasinya) | 12/8 Pattern 1, 12/8 Pattern 2 | Lambat 6, Cepat 2, Lambat 4 |
