@@ -1,0 +1,32 @@
+{
+ "d_pipeline": {
+  "path": "img2/d_pipeline.png",
+  "w": 1400,
+  "h": 560
+ },
+ "d_split": {
+  "path": "img2/d_split.png",
+  "w": 1400,
+  "h": 570
+ },
+ "d_game_arch": {
+  "path": "img2/d_game_arch.png",
+  "w": 1400,
+  "h": 540
+ },
+ "d_trainer_flow": {
+  "path": "img2/d_trainer_flow.png",
+  "w": 1200,
+  "h": 672
+ },
+ "d_prompt": {
+  "path": "img2/d_prompt.png",
+  "w": 1200,
+  "h": 610
+ },
+ "d_naskah": {
+  "path": "img2/d_naskah.png",
+  "w": 1360,
+  "h": 620
+ }
+}

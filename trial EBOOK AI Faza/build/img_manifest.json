@@ -1,0 +1,137 @@
+{
+ "f_chord": {
+  "path": "img_crop/f_chord.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_diaud": {
+  "path": "img_crop/f_diaud.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_skips": {
+  "path": "img_crop/f_skips.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_blues_maj": {
+  "path": "img_crop/f_blues_maj.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_blues_min": {
+  "path": "img_crop/f_blues_min.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_tips_updown": {
+  "path": "img_crop/f_tips_updown.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_lick_the": {
+  "path": "img_crop/f_lick_the.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_lick_6th": {
+  "path": "img_crop/f_lick_6th.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_lick_tri": {
+  "path": "img_crop/f_lick_tri.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_basic": {
+  "path": "img_crop/f_basic.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_guide_prac": {
+  "path": "img_crop/f_guide_prac.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_kurva": {
+  "path": "img_crop/f_kurva.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_rep": {
+  "path": "img_crop/f_md_rep.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_seq": {
+  "path": "img_crop/f_md_seq.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_oct": {
+  "path": "img_crop/f_md_oct.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_exp": {
+  "path": "img_crop/f_md_exp.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_con": {
+  "path": "img_crop/f_md_con.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_ext": {
+  "path": "img_crop/f_md_ext.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_tru": {
+  "path": "img_crop/f_md_tru.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_aug": {
+  "path": "img_crop/f_md_aug.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_dim": {
+  "path": "img_crop/f_md_dim.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_md_hmir": {
+  "path": "img_crop/f_md_hmir.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_mm": {
+  "path": "img_crop/f_mm.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_wt": {
+  "path": "img_crop/f_wt.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_dimsc": {
+  "path": "img_crop/f_dimsc.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_alt": {
+  "path": "img_crop/f_alt.png",
+  "w": 1455,
+  "h": 785
+ },
+ "f_guide": {
+  "path": "img_crop/f_guide.png",
+  "w": 1455,
+  "h": 785
+ }
+}
