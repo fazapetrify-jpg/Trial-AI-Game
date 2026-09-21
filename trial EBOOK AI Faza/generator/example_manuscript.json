@@ -1,0 +1,45 @@
+{
+  "title": "Cara Membaca Not Balok untuk Pemula",
+  "author": "Musti Musik",
+  "author_note": [
+    "Pernah melihat partitur dan merasa lima garisnya sulit dibaca? Buku ini mengajak kamu mengenali beberapa nada patokan terlebih dahulu, lalu membaca not lain dari arah dan jaraknya."
+  ],
+  "how_this_helps": [
+    "Kamu akan memisahkan dua tugas: mencari tinggi nada dan menghitung durasi. Setelah masing-masing terasa jelas, keduanya digabungkan perlahan di piano."
+  ],
+  "introduction": [
+    "Not balok mencatat nada dan ritme. Posisi kepala not pada paranada membantu menentukan tinggi nada, sedangkan bentuk not menunjukkan lamanya bunyi."
+  ],
+  "chapters": [
+    {
+      "title": "Paranada dan Klef",
+      "sections": [
+        {
+          "heading": "Lima Garis dan Empat Spasi",
+          "paragraphs": [
+            "Paranada mempunyai lima garis dan empat spasi. Urutannya selalu dihitung dari bawah. Saat not bergerak dari satu garis ke spasi di atasnya, namanya maju satu langkah dalam urutan A sampai G."
+          ],
+          "bullets": ["Hitung garis dari bawah ke atas.", "Gunakan klef untuk menentukan nama nada pada garis acuan."],
+          "tip": "Tunjuk setiap garis dan spasi sambil menyebut urutannya sebelum memainkan nada."
+        }
+      ]
+    },
+    {
+      "title": "Landmark System",
+      "sections": [
+        {
+          "heading": "Mulai dari Middle C",
+          "paragraphs": [
+            "Middle C atau C4 berada di antara paranada klef G dan klef F pada grand staff. Jadikan C4 sebagai titik awal, lalu hitung naik atau turun satu posisi setiap kali not berpindah antara garis dan spasi."
+          ],
+          "bullets": ["Temukan C4 pada keyboard.", "Baca kontur naik dan turun sebelum memberi nama setiap not."],
+          "tip": "Latih lima nada acuan secara acak supaya kamu tidak bergantung pada hafalan urutan."
+        }
+      ]
+    }
+  ],
+  "closing": [
+    "Kebiasaan membaca terbentuk melalui latihan singkat yang diulang. Pilih beberapa not setiap hari, sebut nama nadanya, tepuk durasinya, lalu mainkan perlahan."
+  ],
+  "sources": ["Modul Cara Baca Not Balok untuk Pemula, Musti Musik.", "Kuliah Piano Cara Baca Not Balok Untuk Pemula: https://youtu.be/8M-1qz-4yV0"]
+}
