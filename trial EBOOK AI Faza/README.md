@@ -19,3 +19,11 @@ Semua .docx di `ebooks/` pakai format sama: A5, Montserrat (body 11 / heading 14
 - `EBOOK Gaya Ngiring.docx` — pattern ngiring (lambat/cepat/funk/birama lain) + pattern genre jazz + Pendahuluan (solo vs ngiring) + BAB IV cara ngiring penyanyi vs band. Sumbernya di `sumber-gaya-ngiring/`.
 
 Lihat [`README.md`](README.md) asli di repo sumber untuk detail lengkap tiap file.
+
+## Generator baru dari video atau transkrip
+
+Folder [`generator/`](generator/) menyediakan alur umum video/YouTube →
+transkrip → naskah JSON yang dapat ditinjau → `.docx` editable. Profil
+tipografinya mengikuti contoh `EBOOK Gaya Ngiring 3.docx`, termasuk font
+Montserrat yang ditanam di file. Lihat [panduan generator](generator/README.md)
+untuk cara menjalankan dan memverifikasi jumlah halaman hasil render.

@@ -1,0 +1,17 @@
+{
+  "reference": "EBOOK Gaya Ngiring 3.docx",
+  "page_width_inches": 5.827,
+  "page_height_inches": 8.268,
+  "margin_inches": 1.0,
+  "font_family": "Montserrat",
+  "body_pt": 11,
+  "body_line_spacing": 1.5,
+  "body_after_pt": 8,
+  "body_first_indent_pt": 17,
+  "section_heading_pt": 14,
+  "subheading_pt": 12,
+  "chapter_number_pt": 25,
+  "chapter_title_pt": 18,
+  "text_color": "000000",
+  "heading_color": "000000"
+}
