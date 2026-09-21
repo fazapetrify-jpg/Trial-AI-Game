@@ -1,0 +1,27 @@
+# OS
+.DS_Store
+
+# Raw source video (huge, never belongs in git)
+video_source*/
+
+# Rendered/exported deliverables (regenerate from .md via scripts/, don't commit)
+*.mp4
+*.docx
+*.pdf
+*_weasy.html
+*_html_*.png
+
+# Keep tracked reference PDFs that already existed before this rule
+!Buku Hearing Lagu*.pdf
+!Buku Worship*.pdf
+!COVER BUKU HEARING.pdf
+!Cheat Sheet*.pdf
+!E BOOK CHORD MANIS.pdf
+!E-BOOK WORSHIP STARTER.pdf
+!SAX KEY.pdf
+!SNEAK PEAK EBOOK BUAT DAN ARRANSEMEN LAGU DARI 0.pdf
+!Sneak Peak Buku Hearing.pdf
+!6 CARA PINDAH KUNCI.pdf
+!MASTERCLASS 28_7_2026.pdf
+!MASTERCLASS 28_8_2026.pdf
+!UPDATE Buku Belajar dari Nol.pdf
